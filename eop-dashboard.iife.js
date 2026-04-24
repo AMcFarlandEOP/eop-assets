@@ -400,7 +400,7 @@ async function getBalance(wallet, token) {
         signal: AbortSignal.timeout(5000)
       });
       const j = await r.json();
-      if (j.result && j.result !== '0x') return parseInt(j.result, 16);
+      if (j.result && j.result !== '0x') return BigInt(j.result) > 0n ? 1 : 0;
     } catch(_){ continue; }
   }
   return 0;
