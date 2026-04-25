@@ -19,8 +19,8 @@ const OBST_ADDRESS = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
 const MEMBERS_PAGE = "https://eopmedia.com/members/";
 
 // ⬇ Replace these with your real Luma calendar IDs when ready
-const LUMA_TACT_CALENDAR_ID = https://luma.com/embed/calendar/cal-rZpQJCqIvCR4nlC/events; // e.g. "cal-xxxxxxxxxxxxxxxx"
-const LUMA_OBST_CALENDAR_ID = https://luma.com/embed/calendar/cal-rZpQJCqIvCR4nlC/events; // e.g. "cal-xxxxxxxxxxxxxxxx"
+const LUMA_TACT_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC"; // e.g. "cal-xxxxxxxxxxxxxxxx"
+const LUMA_OBST_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC"; // e.g. "cal-xxxxxxxxxxxxxxxx"
 
 const RPC_ENDPOINTS = [
   "https://rpc.ankr.com/polygon",
