@@ -14,8 +14,8 @@
 (async () => {
 
 // ── CONFIG ────────────────────────────────────
-const TACT_ADDRESS = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
-const OBST_ADDRESS = "0xddD6C7D0494B2fD4fA3E3F25485b1f210e8DFDd2";
+const TACT_ADDRESS = "0xddD6C7D0494B2fD4fA3E3F25485b1f210e8DFDd2";
+const OBST_ADDRESS = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
 const MEMBERS_PAGE = "https://eopmedia.com/members/";
 
 // ⬇ Replace these with your real Luma calendar IDs when ready
