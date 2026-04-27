@@ -5,10 +5,6 @@
  * Usage on WordPress page:
  *   <div id="eop-dashboard-root"></div>
  *   <script src="https://AMcFarlandEOP.github.io/eop-assets/eop-dashboard.iife.js"></script>
- *
- * Before deploying, replace the two Luma calendar IDs:
- *   LUMA_TACT_CALENDAR_ID  — your TACT member sessions calendar
- *   LUMA_OBST_CALENDAR_ID  — your Observer biweekly sessions calendar
  */
 
 (async () => {
@@ -17,16 +13,11 @@
 const TACT_ADDRESS = "0xddD6C7D0494B2fD4fA3E3F25485b1f210e8DFDd2";
 const OBST_ADDRESS = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
 const MEMBERS_PAGE = "https://eopmedia.com/members/";
+const CLIENT_ID    = "a83405fb2a3910cfc51a6bb4b227655d";
 
-// ⬇ Replace these with your real Luma calendar IDs when ready
-const LUMA_TACT_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC"; // e.g. "cal-xxxxxxxxxxxxxxxx"
-const LUMA_OBST_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC"; // e.g. "cal-xxxxxxxxxxxxxxxx"
-
-const RPC_ENDPOINTS = [
-  "https://rpc.ankr.com/polygon",
-  "https://polygon-bor-rpc.publicnode.com",
-  "https://polygon.drpc.org"
-];
+// ⬇ Replace with your real Luma calendar IDs when ready
+const LUMA_TACT_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC";
+const LUMA_OBST_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC";
 
 // ── STYLES ────────────────────────────────────
 const css = `
@@ -386,29 +377,41 @@ function injectStyles() {
   document.head.appendChild(s);
 }
 
-const short = a => a ? a.slice(0,6) + '…' + a.slice(-4) : '';
+const short = a => a ? a.slice(0,6) + '\u2026' + a.slice(-4) : '';
 
-async function getBalance(wallet, token) {
-  const w = wallet.slice(2).padStart(64,'0');
-  const d = '0x00fdd58e' + w + '1'.padStart(64,'0');
-  for (const rpc of RPC_ENDPOINTS) {
-    try {
-      const r = await fetch(rpc, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({jsonrpc:'2.0',id:1,method:'eth_call',params:[{to:token,data:d},'latest']}),
-        signal: AbortSignal.timeout(5000)
-      });
-      const j = await r.json();
-      if (j.result && j.result !== '0x') return BigInt(j.result) > 0n ? 1 : 0;
-    } catch(_){ continue; }
+// ── BALANCE CHECK via ThirdWeb RPC ─────────────
+async function getBalance(walletAddr, contractAddr) {
+  const rpc = `https://137.rpc.thirdweb.com/${CLIENT_ID}`;
+  // balanceOf(address) selector: 0x70a08231
+  const payload = {
+    jsonrpc: "2.0", id: 1, method: "eth_call",
+    params: [{
+      to: contractAddr,
+      data: "0x70a08231" + walletAddr.slice(2).padStart(64, "0")
+    }, "latest"]
+  };
+  try {
+    const r = await fetch(rpc, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000)
+    });
+    const j = await r.json();
+    console.log("Dashboard balance:", contractAddr, "result:", j.result, "error:", j.error);
+    if (!j.error && j.result && j.result !== "0x" &&
+        j.result !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
+      return BigInt(j.result) > 0n ? 1 : 0;
+    }
+  } catch(e) {
+    console.error("Dashboard balance error:", contractAddr, e.message);
   }
   return 0;
 }
 
+// ── READ THIRDWEB WALLET SESSION ───────────────
 function getWallet() {
   try {
-    // ThirdWeb v5 storage keys
     const keys = Object.keys(localStorage);
     for (const key of keys) {
       if (!key.startsWith('thirdweb')) continue;
@@ -416,9 +419,8 @@ function getWallet() {
         const raw = localStorage.getItem(key);
         if (!raw) continue;
         const val = JSON.parse(raw);
-        // Check various possible address locations
-        const addr = val?.address || 
-                     val?.account?.address || 
+        const addr = val?.address ||
+                     val?.account?.address ||
                      val?.accounts?.[0] ||
                      val?.[0]?.address;
         if (addr && addr.startsWith('0x') && addr.length === 42) return addr;
@@ -434,6 +436,7 @@ function getWallet() {
   return null;
 }
 
+// ── CALENDAR EMBED ─────────────────────────────
 function calEmbed(id, label) {
   if (!id) return `
     <div class="eop-cal-placeholder">
@@ -446,6 +449,7 @@ function calEmbed(id, label) {
     style="border:none" allowfullscreen></iframe>`;
 }
 
+// ── VIDEO LIBRARY ──────────────────────────────
 const videos = [
   {e:'📦',t:'Initial Setup',d:'Unboxing and first-time wallet activation'},
   {e:'↗️',t:'Sending & Receiving',d:'How to send and receive crypto safely'},
@@ -459,7 +463,7 @@ const vidCards = () => videos.map(v=>`
     <div class="eop-vid-info"><h4>${v.t}</h4><p>${v.d}</p></div>
   </div>`).join('');
 
-// ── SCREENS ───────────────────────────────────
+// ── SCREENS ────────────────────────────────────
 const loading = () => `
   <div id="eop-db-wrap"><div class="eop-center">
     <div class="eop-spinner"></div>
@@ -580,28 +584,32 @@ const obstDash = addr => `
     </div>
   </div></div>`;
 
-// ── INIT ──────────────────────────────────────
+// ── INIT ───────────────────────────────────────
 async function init() {
   const root = document.getElementById('eop-dashboard-root');
   if (!root) return;
   injectStyles();
   root.innerHTML = loading();
 
-  const address = getWallet();
-  if (!address) { root.innerHTML = noWallet(); return; }
+  // Debug — log all ThirdWeb localStorage keys
+  console.log("ThirdWeb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
 
-console.log("All thirdweb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
-console.log("Found address:", address);
+  const address = getWallet();
+  console.log("Wallet found:", address);
+
+  if (!address) { root.innerHTML = noWallet(); return; }
 
   try {
     const [tact, obst] = await Promise.all([
       getBalance(address, TACT_ADDRESS),
       getBalance(address, OBST_ADDRESS)
     ]);
+    console.log("Final result — TACT:", tact, "OBST:", obst);
     if      (tact > 0) root.innerHTML = tactDash(address);
     else if (obst > 0) root.innerHTML = obstDash(address);
     else               root.innerHTML = noAccess(address);
   } catch(e) {
+    console.error("Init error:", e);
     root.innerHTML = `
       <div id="eop-db-wrap"><div class="eop-center"><div class="eop-notoken">
         <div class="eop-logo-mark" style="margin-bottom:16px">EOP Media</div>
