@@ -408,16 +408,29 @@ async function getBalance(wallet, token) {
 
 function getWallet() {
   try {
-    if (!localStorage.getItem('thirdweb:active-wallet-id')) return null;
-    for (const k of Object.keys(localStorage)) {
-      if (!k.startsWith('thirdweb')) continue;
+    // ThirdWeb v5 storage keys
+    const keys = Object.keys(localStorage);
+    for (const key of keys) {
+      if (!key.startsWith('thirdweb')) continue;
       try {
-        const v = JSON.parse(localStorage.getItem(k));
-        const a = v?.address || v?.account?.address || v?.accounts?.[0];
-        if (a?.startsWith('0x') && a.length === 42) return a;
-      } catch(_){}
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        const val = JSON.parse(raw);
+        // Check various possible address locations
+        const addr = val?.address || 
+                     val?.account?.address || 
+                     val?.accounts?.[0] ||
+                     val?.[0]?.address;
+        if (addr && addr.startsWith('0x') && addr.length === 42) return addr;
+      } catch(_) {}
     }
-  } catch(_){}
+    // Also check for address stored as plain string
+    for (const key of keys) {
+      if (!key.startsWith('thirdweb')) continue;
+      const raw = localStorage.getItem(key);
+      if (raw && raw.startsWith('0x') && raw.length === 42) return raw;
+    }
+  } catch(_) {}
   return null;
 }
 
@@ -576,6 +589,9 @@ async function init() {
 
   const address = getWallet();
   if (!address) { root.innerHTML = noWallet(); return; }
+
+console.log("All thirdweb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
+console.log("Found address:", address);
 
   try {
     const [tact, obst] = await Promise.all([
