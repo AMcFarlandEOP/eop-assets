@@ -411,21 +411,26 @@ async function getBalance(walletAddr, contractAddr) {
 
 // ── READ THIRDWEB WALLET SESSION ───────────────
 function getWallet() {
+  // Primary: read wallet address from URL parameter set by gate widget
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const urlWallet = params.get('wallet');
+    if (urlWallet && urlWallet.startsWith('0x') && urlWallet.length === 42) {
+      console.log("Wallet from URL param:", urlWallet);
+      return urlWallet;
+    }
+  } catch(_) {}
+
+  // Fallback: scan localStorage for ThirdWeb session
   try {
     const keys = Object.keys(localStorage);
-    
-    // ThirdWeb v5 stores address under wallet-specific keys
-    // e.g. "thirdweb:com.kraken:accounts" or similar
     for (const key of keys) {
       if (!key.includes('thirdweb')) continue;
       try {
         const raw = localStorage.getItem(key);
         if (!raw) continue;
-        // Check if value looks like an address directly
         if (raw.startsWith('0x') && raw.length === 42) return raw;
-        // Check JSON structures
         const val = JSON.parse(raw);
-        // Array of addresses
         if (Array.isArray(val)) {
           for (const item of val) {
             if (typeof item === 'string' && item.startsWith('0x') && item.length === 42) return item;
@@ -433,27 +438,8 @@ function getWallet() {
             if (addr && addr.startsWith('0x') && addr.length === 42) return addr;
           }
         }
-        // Object with address
-        const addr = val?.address ||
-                     val?.account?.address ||
-                     val?.accounts?.[0];
+        const addr = val?.address || val?.account?.address || val?.accounts?.[0];
         if (addr && addr.startsWith('0x') && addr.length === 42) return addr;
-      } catch(_) {}
-    }
-
-    // Last resort — check sessionStorage too
-    for (const key of Object.keys(sessionStorage)) {
-      if (!key.includes('thirdweb')) continue;
-      try {
-        const raw = sessionStorage.getItem(key);
-        if (!raw) continue;
-        if (raw.startsWith('0x') && raw.length === 42) return raw;
-        const val = JSON.parse(raw);
-        if (Array.isArray(val)) {
-          for (const item of val) {
-            if (typeof item === 'string' && item.startsWith('0x') && item.length === 42) return item;
-          }
-        }
       } catch(_) {}
     }
   } catch(_) {}
@@ -617,13 +603,6 @@ async function init() {
 
   // Debug — log all ThirdWeb localStorage keys
   console.log("ThirdWeb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
-
-// Deep debug — show contents of all ThirdWeb keys
-  const twKeys = Object.keys(localStorage).filter(k => k.startsWith('thirdweb'));
-  twKeys.forEach(k => {
-    console.log("Key:", k, "Value:", localStorage.getItem(k));
-console.log("ALL localStorage keys:", Object.keys(localStorage));
-  });
 
   const address = getWallet();
   console.log("Wallet found:", address);
