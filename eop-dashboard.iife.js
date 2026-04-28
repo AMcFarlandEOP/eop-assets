@@ -594,6 +594,12 @@ async function init() {
   // Debug — log all ThirdWeb localStorage keys
   console.log("ThirdWeb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
 
+// Deep debug — show contents of all ThirdWeb keys
+  const twKeys = Object.keys(localStorage).filter(k => k.startsWith('thirdweb'));
+  twKeys.forEach(k => {
+    console.log("Key:", k, "Value:", localStorage.getItem(k));
+  });
+
   const address = getWallet();
   console.log("Wallet found:", address);
 
