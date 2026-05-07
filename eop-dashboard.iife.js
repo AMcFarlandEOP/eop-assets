@@ -1,6 +1,6 @@
 /**
  * EOP Dashboard Bundle — eop-dashboard.iife.js
- * Host on GitHub Pages alongside eop-connect.iife.js
+ * Host on GitHub Pages: https://AMcFarlandEOP.github.io/eop-assets/eop-dashboard.iife.js
  *
  * Usage on WordPress page:
  *   <div id="eop-dashboard-root"></div>
@@ -9,48 +9,44 @@
 
 (async () => {
 
-// ── CONFIG ────────────────────────────────────
-const TACT_ADDRESS = "0xddD6C7D0494B2fD4fA3E3F25485b1f210e8DFDd2";
-const OBST_ADDRESS = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
-const MEMBERS_PAGE = "https://eopmedia.com/members/";
-const CLIENT_ID    = "a83405fb2a3910cfc51a6bb4b227655d";
+// ── CONFIG ────────────────────────────────────────────────────
+const TACT_ADDRESS   = "0xddD6C7D0494B2fD4fA3E3F25485b1f210e8DFDd2";
+const OBST_ADDRESS   = "0xa92bAee9c2445B8c400CE13e0110c1E4f6594Af6";
+const MEMBERS_PAGE   = "https://eopmedia.com/members/";
+const CLIENT_ID      = "a83405fb2a3910cfc51a6bb4b227655d";
 
-// ⬇ Replace with your real Luma calendar IDs when ready
 const LUMA_TACT_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC";
 const LUMA_OBST_CALENDAR_ID = "cal-rZpQJCqIvCR4nlC";
 
-// ── STYLES ────────────────────────────────────
-const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+const LOGO_URL       = "https://eopmedia.com/wp-content/uploads/2026/04/EOP-Logo-Header-145x88-1.png";
+const TACT_TOKEN_IMG = "https://eopmedia.com/wp-content/uploads/2026/05/The-Agency-Collective-03.19.2026.png";
+const OBST_TOKEN_IMG = "https://eopmedia.com/wp-content/uploads/2026/05/Observer-Token-03.19.2026.png";
 
-  :root {
-    --bg:          #0a0a0f;
-    --surface:     #111118;
-    --surface2:    #18181f;
-    --border:      rgba(255,255,255,0.07);
-    --border-hi:   rgba(255,255,255,0.14);
-    --text:        #e8e8f0;
-    --muted:       #6b6b80;
-    --tact:        #7c6af7;
-    --tact-glow:   rgba(124,106,247,0.18);
-    --tact-dim:    rgba(124,106,247,0.08);
-    --obst:        #2ab89a;
-    --obst-glow:   rgba(42,184,154,0.18);
-    --obst-dim:    rgba(42,184,154,0.08);
-  }
+const LIBRARY_URL    = "https://eopmedia.com/member-dashboard/strategy-sessions/";
+const LAB_URL        = "https://eopmedia.com/member-dashboard/agency-lab/";
+const TANGEM_URL     = "https://eopmedia.com/member-dashboard/guest-speakers/";
+const UPGRADE_URL    = "https://eopmedia.com/the-agency-collective/";
+const TERMS_URL      = "https://eopmedia.com/terms-and-conditions/";
+const PRIVACY_URL    = "https://eopmedia.com/privacy-policy/";
+const CANCEL_URL     = "https://eopmedia.com/cancellation-policy/";
+
+// ── STYLES ────────────────────────────────────────────────────
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
   #eop-db-wrap * { box-sizing: border-box; margin: 0; padding: 0; }
 
   #eop-db-wrap {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    background: var(--bg);
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #0a0a0f;
+    color: #e8e8f0;
     min-height: 100vh;
     line-height: 1.6;
+    width: 100%;
   }
 
-  .eop-center {
+  /* ── Loading / Error ── */
+  #eop-db-wrap .eop-center {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,315 +56,427 @@ const css = `
     text-align: center;
     padding: 40px 20px;
   }
-
-  .eop-spinner {
+  #eop-db-wrap .eop-spinner {
     width: 36px; height: 36px;
-    border: 2px solid rgba(255,255,255,0.1);
-    border-top-color: var(--tact);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-top-color: #7c6af7;
     border-radius: 50%;
     animation: eop-spin 0.8s linear infinite;
   }
   @keyframes eop-spin { to { transform: rotate(360deg); } }
-
-  .eop-logo-mark {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
+  #eop-db-wrap .eop-logo-mark {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: #5f5e5a;
   }
-
-  .eop-notoken { max-width: 480px; }
-  .eop-notoken h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 12px;
+  #eop-db-wrap .eop-notoken { max-width: 440px; text-align: center; }
+  #eop-db-wrap .eop-notoken h2 {
+    font-size: 24px; font-weight: 400;
+    color: #e8e8f0; margin-bottom: 10px;
   }
-  .eop-notoken p { color: var(--muted); font-size: 15px; margin-bottom: 16px; }
-
-  .eop-btn {
+  #eop-db-wrap .eop-notoken p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px; font-weight: 300;
+    color: #6b6b80; margin-bottom: 20px;
+  }
+  #eop-db-wrap .eop-btn-primary {
     display: inline-block;
-    padding: 12px 28px;
-    background: var(--tact);
+    padding: 11px 24px;
+    background: #7c6af7;
     color: #fff;
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
     border-radius: 6px;
     transition: opacity 0.2s;
-    margin-top: 8px;
   }
-  .eop-btn:hover { opacity: 0.85; }
-  .eop-btn.obst-btn { background: var(--obst); }
+  #eop-db-wrap .eop-btn-primary:hover { opacity: 0.85; }
+  #eop-db-wrap .eop-btn-teal { background: #2ab89a; }
 
-  .eop-dash {
+  /* ── Nav bar ── */
+  #eop-db-wrap .eop-nav {
+    background: #111118;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  #eop-db-wrap .eop-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  #eop-db-wrap .eop-nav-logo {
+    height: 32px;
+    width: auto;
+  }
+  #eop-db-wrap .eop-nav-divider {
+    width: 0.5px;
+    height: 22px;
+    background: rgba(255,255,255,0.1);
+  }
+  #eop-db-wrap .eop-nav-portal {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5f5e5a;
+  }
+  #eop-db-wrap .eop-badge {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    padding: 4px 14px;
+    white-space: nowrap;
+  }
+  #eop-db-wrap .eop-badge-tact {
+    color: #a89ff8;
+    background: rgba(124,106,247,0.1);
+    border: 0.5px solid rgba(124,106,247,0.25);
+  }
+  #eop-db-wrap .eop-badge-obst {
+    color: #5dd8be;
+    background: rgba(42,184,154,0.1);
+    border: 0.5px solid rgba(42,184,154,0.25);
+  }
+
+  /* ── Hero ── */
+  #eop-db-wrap .eop-hero {
+    padding: 40px 40px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
     max-width: 1100px;
     margin: 0 auto;
-    padding: 48px 24px 80px;
-    animation: eop-fadeUp 0.5s ease both;
+    width: 100%;
   }
-  @keyframes eop-fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .eop-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 48px;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .eop-header-left h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(22px, 4vw, 34px);
-    font-weight: 800;
-    line-height: 1.15;
-  }
-  .eop-header-left p { color: var(--muted); margin-top: 6px; font-size: 14px; }
-  .eop-wallet-tag {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 10px;
-    font-family: monospace;
-    letter-spacing: 0.04em;
-  }
-
-  .eop-tier-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 14px;
-    border-radius: 100px;
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .eop-tier-badge.tact-badge {
-    background: var(--tact-dim);
-    border: 1px solid rgba(124,106,247,0.3);
-    color: #a89ff8;
-  }
-  .eop-tier-badge.obst-badge {
-    background: var(--obst-dim);
-    border: 1px solid rgba(42,184,154,0.3);
-    color: #5dd8be;
-  }
-  .eop-badge-dot {
-    width: 6px; height: 6px;
+  #eop-db-wrap .eop-hero-token {
+    width: 72px; height: 72px;
     border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .tact-badge .eop-badge-dot { background: var(--tact); box-shadow: 0 0 6px var(--tact); }
-  .obst-badge .eop-badge-dot { background: var(--obst); box-shadow: 0 0 6px var(--obst); }
-
-  .eop-section { margin-bottom: 40px; }
-  .eop-section-head {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-  }
-  .eop-section-head h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-  .eop-section-line { flex: 1; height: 1px; background: var(--border); }
-
-  .eop-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-  .eop-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
+    justify-content: center;
+    flex-shrink: 0;
     overflow: hidden;
   }
-  .eop-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
-  .eop-card::before {
+  #eop-db-wrap .eop-hero-token.tact {
+    border: 0.5px solid rgba(124,106,247,0.3);
+    background: rgba(124,106,247,0.08);
+  }
+  #eop-db-wrap .eop-hero-token.obst {
+    border: 0.5px solid rgba(42,184,154,0.3);
+    background: rgba(42,184,154,0.08);
+  }
+  #eop-db-wrap .eop-hero-token img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  #eop-db-wrap .eop-hero-text h1 {
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 400;
+    color: #e8e8f0;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  #eop-db-wrap .eop-hero-text h1 em { color: #6b6b80; font-style: italic; }
+  #eop-db-wrap .eop-hero-text p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: #6b6b80; margin: 0;
+  }
+  #eop-db-wrap .eop-wallet-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 10px; color: #444441;
+    display: block; margin-top: 6px;
+  }
+
+  /* ── Content area ── */
+  #eop-db-wrap .eop-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ── Section ── */
+  #eop-db-wrap .eop-section-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6b6b80;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    display: block;
+  }
+
+  /* ── Cards grid ── */
+  #eop-db-wrap .eop-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  #eop-db-wrap .eop-card {
+    background: #111118;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  #eop-db-wrap .eop-card:hover {
+    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-2px);
+  }
+  #eop-db-wrap .eop-card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
-    border-radius: 12px 12px 0 0;
+    height: 1.5px;
   }
-  .eop-card.tc::before { background: linear-gradient(90deg, var(--tact), transparent); }
-  .eop-card.oc::before { background: linear-gradient(90deg, var(--obst), transparent); }
+  #eop-db-wrap .eop-card.tact::before { background: linear-gradient(90deg, #7c6af7, transparent); }
+  #eop-db-wrap .eop-card.obst::before { background: linear-gradient(90deg, #2ab89a, transparent); }
 
-  .eop-card-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
+  #eop-db-wrap .eop-card-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
-    font-size: 18px;
+    margin-bottom: 14px;
+    font-size: 16px;
   }
-  .tc .eop-card-icon { background: var(--tact-dim); }
-  .oc .eop-card-icon { background: var(--obst-dim); }
+  #eop-db-wrap .eop-card.tact .eop-card-icon { background: rgba(124,106,247,0.1); }
+  #eop-db-wrap .eop-card.obst .eop-card-icon { background: rgba(42,184,154,0.1); }
 
-  .eop-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .eop-card p { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 20px; }
-  .eop-card-link {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+  #eop-db-wrap .eop-card-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+  }
+  #eop-db-wrap .eop-card.tact .eop-card-tag { color: #a89ff8; }
+  #eop-db-wrap .eop-card.obst .eop-card-tag { color: #5dd8be; }
+
+  #eop-db-wrap .eop-card-title {
+    font-size: 15px; font-weight: 400;
+    color: #e8e8f0;
+    display: block; margin-bottom: 6px;
+  }
+  #eop-db-wrap .eop-card-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: #6b6b80; line-height: 1.55;
+    display: block; margin-bottom: 16px;
+  }
+  #eop-db-wrap .eop-card-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     transition: gap 0.2s;
   }
-  .tc .eop-card-link { color: var(--tact); }
-  .oc .eop-card-link { color: var(--obst); }
-  .eop-card-link:hover { gap: 10px; }
-
-  .eop-calendar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .eop-calendar-head {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-  }
-  .eop-calendar-head h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  .eop-cal-placeholder {
-    min-height: 200px;
+  #eop-db-wrap .eop-card-link:hover { gap: 8px; }
+  #eop-db-wrap .eop-card.tact .eop-card-link { color: #7c6af7; }
+  #eop-db-wrap .eop-card.obst .eop-card-link { color: #2ab89a; }
+  #eop-db-wrap .eop-card-meta {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: 10px;
-    padding: 40px 20px;
-    text-align: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
   }
-  .eop-cal-placeholder .ci { font-size: 28px; }
-  .eop-cal-placeholder p { color: var(--muted); font-size: 13px; }
-  .eop-cal-placeholder code {
-    font-size: 11px;
-    color: var(--tact);
-    background: var(--tact-dim);
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-family: monospace;
+  #eop-db-wrap .eop-card-meta span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; color: #444441;
   }
 
-  .eop-video-grid {
+  /* ── Video cards (Tangem) ── */
+  #eop-db-wrap .eop-vid-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
   }
-  .eop-vid {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+  #eop-db-wrap .eop-vid {
+    background: #111118;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
     overflow: hidden;
     transition: border-color 0.2s;
   }
-  .eop-vid:hover { border-color: var(--border-hi); }
-  .eop-vid-thumb {
+  #eop-db-wrap .eop-vid:hover { border-color: rgba(255,255,255,0.14); }
+  #eop-db-wrap .eop-vid-thumb {
     aspect-ratio: 16/9;
-    background: var(--surface2);
+    background: #18181f;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 20px;
     position: relative;
   }
-  .eop-vid-soon {
+  #eop-db-wrap .eop-vid-soon {
     position: absolute;
-    bottom: 8px; right: 8px;
-    font-size: 10px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    bottom: 6px; right: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 3px 8px;
+    background: #111118;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    padding: 2px 7px;
     border-radius: 4px;
-    color: var(--muted);
+    color: #5f5e5a;
   }
-  .eop-vid-info { padding: 14px 16px; }
-  .eop-vid-info h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 4px;
+  #eop-db-wrap .eop-vid-info { padding: 12px 14px; }
+  #eop-db-wrap .eop-vid-info h4 {
+    font-size: 13px; font-weight: 400;
+    color: #e8e8f0; margin-bottom: 3px;
   }
-  .eop-vid-info p { font-size: 12px; color: var(--muted); }
+  #eop-db-wrap .eop-vid-info p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; color: #6b6b80;
+  }
 
-  .eop-lab {
-    background: linear-gradient(135deg, var(--tact-dim) 0%, var(--surface) 60%);
-    border: 1px solid rgba(124,106,247,0.25);
-    border-radius: 14px;
-    padding: 32px;
+  /* ── Calendar ── */
+  #eop-db-wrap .eop-calendar {
+    background: #111118;
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  #eop-db-wrap .eop-calendar-head {
+    padding: 14px 18px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; color: #6b6b80;
+  }
+  #eop-db-wrap .eop-calendar-note {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px; color: #444441;
+    margin-top: 8px;
+    font-style: italic;
+    padding-left: 2px;
+  }
+
+  /* ── Agency Lab panel ── */
+  #eop-db-wrap .eop-lab-panel {
+    background: rgba(124,106,247,0.06);
+    border: 0.5px solid rgba(124,106,247,0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    gap: 16px;
     flex-wrap: wrap;
   }
-  .eop-lab-tag {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+  #eop-db-wrap .eop-lab-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--tact);
-    margin-bottom: 10px;
+    color: #a89ff8;
+    margin-bottom: 4px;
     display: block;
   }
-  .eop-lab h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 8px;
+  #eop-db-wrap .eop-lab-panel h3 {
+    font-size: 16px; font-weight: 400;
+    color: #e8e8f0; margin-bottom: 4px;
   }
-  .eop-lab p { color: var(--muted); font-size: 14px; max-width: 480px; }
+  #eop-db-wrap .eop-lab-panel p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: #6b6b80; max-width: 460px;
+  }
 
-  @media (max-width: 600px) {
-    .eop-dash { padding: 32px 16px 60px; }
-    .eop-header, .eop-lab { flex-direction: column; }
-    .eop-grid, .eop-video-grid { grid-template-columns: 1fr; }
+  /* ── Upgrade panel (OBST) ── */
+  #eop-db-wrap .eop-upgrade {
+    background: rgba(42,184,154,0.06);
+    border: 0.5px solid rgba(42,184,154,0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  #eop-db-wrap .eop-upgrade h3 {
+    font-size: 16px; font-weight: 400;
+    color: #e8e8f0; margin-bottom: 4px;
+  }
+  #eop-db-wrap .eop-upgrade p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; font-weight: 300;
+    color: #6b6b80; max-width: 460px;
+  }
+
+  /* ── Footer ── */
+  #eop-db-wrap .eop-footer {
+    background: #111118;
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  #eop-db-wrap .eop-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #eop-db-wrap .eop-footer-logo { height: 22px; width: auto; opacity: 0.5; }
+  #eop-db-wrap .eop-footer-copy {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; color: #444441;
+  }
+  #eop-db-wrap .eop-footer-links {
+    display: flex;
+    gap: 16px;
+  }
+  #eop-db-wrap .eop-footer-links a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; color: #5f5e5a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  #eop-db-wrap .eop-footer-links a:hover { color: #888780; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    #eop-db-wrap .eop-nav { padding: 14px 20px; }
+    #eop-db-wrap .eop-hero { padding: 28px 20px 24px; }
+    #eop-db-wrap .eop-content { padding: 24px 20px 40px; }
+    #eop-db-wrap .eop-footer { padding: 14px 20px; flex-direction: column; align-items: flex-start; gap: 10px; }
+    #eop-db-wrap .eop-lab-panel, #eop-db-wrap .eop-upgrade { flex-direction: column; }
   }
 `;
 
-// ── HELPERS ───────────────────────────────────
+// ── HELPERS ───────────────────────────────────────────────────
 function injectStyles() {
   if (document.getElementById('eop-db-css')) return;
   const s = document.createElement('style');
@@ -379,10 +487,8 @@ function injectStyles() {
 
 const short = a => a ? a.slice(0,6) + '\u2026' + a.slice(-4) : '';
 
-// ── BALANCE CHECK via ThirdWeb RPC ─────────────
 async function getBalance(walletAddr, contractAddr) {
   const rpc = `https://137.rpc.thirdweb.com/${CLIENT_ID}`;
-  // balanceOf(address) selector: 0x70a08231
   const payload = {
     jsonrpc: "2.0", id: 1, method: "eth_call",
     params: [{
@@ -398,30 +504,22 @@ async function getBalance(walletAddr, contractAddr) {
       signal: AbortSignal.timeout(8000)
     });
     const j = await r.json();
-    console.log("Dashboard balance:", contractAddr, "result:", j.result, "error:", j.error);
     if (!j.error && j.result && j.result !== "0x" &&
         j.result !== "0x0000000000000000000000000000000000000000000000000000000000000000") {
       return BigInt(j.result) > 0n ? 1 : 0;
     }
   } catch(e) {
-    console.error("Dashboard balance error:", contractAddr, e.message);
+    console.error("Balance error:", contractAddr, e.message);
   }
   return 0;
 }
 
-// ── READ THIRDWEB WALLET SESSION ───────────────
 function getWallet() {
-  // Primary: read wallet address from URL parameter set by gate widget
   try {
     const params = new URLSearchParams(window.location.search);
     const urlWallet = params.get('wallet');
-    if (urlWallet && urlWallet.startsWith('0x') && urlWallet.length === 42) {
-      console.log("Wallet from URL param:", urlWallet);
-      return urlWallet;
-    }
+    if (urlWallet && urlWallet.startsWith('0x') && urlWallet.length === 42) return urlWallet;
   } catch(_) {}
-
-  // Fallback: scan localStorage for ThirdWeb session
   try {
     const keys = Object.keys(localStorage);
     for (const key of keys) {
@@ -446,34 +544,55 @@ function getWallet() {
   return null;
 }
 
-// ── CALENDAR EMBED ─────────────────────────────
-function calEmbed(id, label) {
+function calEmbed(id) {
   if (!id) return `
-    <div class="eop-cal-placeholder">
-      <div class="ci">📅</div>
-      <p>Sessions calendar will appear here</p>
-      <code>Replace LUMA_${label}_CALENDAR_ID with your calendar ID</code>
+    <div style="min-height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;padding:32px 20px">
+      <span style="font-family:Poppins,sans-serif;font-size:12px;color:#444441;">📅 Calendar will appear here once scheduled</span>
     </div>`;
   return `<iframe src="https://lu.ma/embed/calendar/${id}/events"
-    width="100%" height="350" frameborder="0"
-    style="border:none" allowfullscreen></iframe>`;
+    width="100%" height="320" frameborder="0"
+    style="border:none;" allowfullscreen></iframe>`;
 }
 
-// ── VIDEO LIBRARY ──────────────────────────────
+const navHTML = (portalLabel, badgeClass, badgeText) => `
+  <div class="eop-nav">
+    <div class="eop-nav-left">
+      <img class="eop-nav-logo" src="${LOGO_URL}" alt="EOP Media"
+        onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span style=&quot;font-family:Poppins,sans-serif;font-size:11px;color:#5f5e5a;letter-spacing:0.1em;text-transform:uppercase;&quot;>EOP Media</span>')">
+      <div class="eop-nav-divider"></div>
+      <span class="eop-nav-portal">${portalLabel}</span>
+    </div>
+    <span class="eop-badge ${badgeClass}">${badgeText}</span>
+  </div>`;
+
+const footerHTML = `
+  <div class="eop-footer">
+    <div class="eop-footer-left">
+      <img class="eop-footer-logo" src="${LOGO_URL}" alt="EOP Media"
+        onerror="this.style.display='none'">
+      <span class="eop-footer-copy">© 2026 EOP Media, LLC</span>
+    </div>
+    <div class="eop-footer-links">
+      <a href="${TERMS_URL}">Terms</a>
+      <a href="${PRIVACY_URL}">Privacy</a>
+      <a href="${CANCEL_URL}">Cancellation</a>
+    </div>
+  </div>`;
+
 const videos = [
-  {e:'📦',t:'Initial Setup',d:'Unboxing and first-time wallet activation'},
-  {e:'↗️',t:'Sending & Receiving',d:'How to send and receive crypto safely'},
-  {e:'🔐',t:'Security',d:'PIN management, backup cards, best practices'},
-  {e:'♻️',t:'Recovery',d:'Restoring access if you lose your card'},
+  {e:'📦', t:'Initial Setup',       d:'Unboxing and first-time wallet activation'},
+  {e:'↗️', t:'Sending & Receiving', d:'How to send and receive crypto safely'},
+  {e:'🔐', t:'Security',            d:'PIN management, backup cards, best practices'},
+  {e:'♻️', t:'Recovery',            d:'Restoring access if you lose your card'},
 ];
 
-const vidCards = () => videos.map(v=>`
+const vidCards = () => videos.map(v => `
   <div class="eop-vid">
     <div class="eop-vid-thumb">${v.e}<span class="eop-vid-soon">Coming soon</span></div>
     <div class="eop-vid-info"><h4>${v.t}</h4><p>${v.d}</p></div>
   </div>`).join('');
 
-// ── SCREENS ────────────────────────────────────
+// ── SCREENS ───────────────────────────────────────────────────
 const loading = () => `
   <div id="eop-db-wrap"><div class="eop-center">
     <div class="eop-spinner"></div>
@@ -482,131 +601,149 @@ const loading = () => `
 
 const noWallet = () => `
   <div id="eop-db-wrap"><div class="eop-center"><div class="eop-notoken">
-    <div class="eop-logo-mark" style="margin-bottom:24px">EOP Media</div>
-    <h2>Connect your wallet</h2>
-    <p>Your session has expired or no wallet was found.</p>
-    <a class="eop-btn" href="${MEMBERS_PAGE}">Connect wallet →</a>
+    <img src="${LOGO_URL}" alt="EOP Media" style="height:36px;opacity:0.5;margin-bottom:24px;"
+      onerror="this.style.display='none'">
+    <h2>Session expired</h2>
+    <p>No wallet session found. Return to the members page to reconnect.</p>
+    <a class="eop-btn-primary" href="${MEMBERS_PAGE}">Connect wallet →</a>
   </div></div></div>`;
 
 const noAccess = addr => `
   <div id="eop-db-wrap"><div class="eop-center"><div class="eop-notoken">
-    <div class="eop-logo-mark" style="margin-bottom:24px">EOP Media</div>
+    <img src="${LOGO_URL}" alt="EOP Media" style="height:36px;opacity:0.5;margin-bottom:24px;"
+      onerror="this.style.display='none'">
     <h2>No membership token</h2>
-    <p>Wallet <code style="font-size:12px;color:var(--tact)">${short(addr)}</code> does not hold a TACT or OBST token.</p>
-    <a class="eop-btn" href="https://eopmedia.com/the-agency-collective/">Learn about membership →</a>
+    <p>Wallet <code style="font-size:11px;color:#7c6af7">${short(addr)}</code> does not hold a TACT or OBST token.</p>
+    <a class="eop-btn-primary" href="https://eopmedia.com/the-agency-collective/" style="margin-top:8px;">Learn about membership →</a>
   </div></div></div>`;
 
 const tactDash = addr => `
-  <div id="eop-db-wrap"><div class="eop-dash">
-    <div class="eop-header">
-      <div class="eop-header-left">
-        <h1>Agency Collective<br>Member Portal</h1>
-        <p>Full member access — TACT token verified</p>
-        <div class="eop-wallet-tag">${short(addr)}</div>
-      </div>
-      <div><div class="eop-tier-badge tact-badge"><span class="eop-badge-dot"></span>Full Member</div></div>
-    </div>
+  <div id="eop-db-wrap">
+    ${navHTML('Member Portal', 'eop-badge-tact', 'Full Member')}
 
-    <div class="eop-section">
-      <div class="eop-lab">
-        <div>
-          <span class="eop-lab-tag">Eligible</span>
-          <h3>The Agency Lab</h3>
-          <p>As a TACT holder you are eligible for invitations to The Agency Lab — our collaborative co-creation space for members working on active projects.</p>
-        </div>
-        <a class="eop-btn" href="mailto:info@eopmedia.com?subject=Agency Lab Invitation Request">Express interest →</a>
+    <div class="eop-hero">
+      <div class="eop-hero-token tact">
+        <img src="${TACT_TOKEN_IMG}" alt="TACT Token" onerror="this.style.display='none'">
+      </div>
+      <div class="eop-hero-text">
+        <h1>Agency Collective<br><em>Member Portal</em></h1>
+        <p>TACT token verified · Full access active</p>
+        <span class="eop-wallet-tag">${short(addr)}</span>
       </div>
     </div>
 
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Upcoming Sessions</h2><div class="eop-section-line"></div></div>
-      <div class="eop-calendar">
-        <div class="eop-calendar-head"><h3>Member Sessions — Strategy, Guest Speakers &amp; Biweekly Q&amp;A</h3></div>
-        ${calEmbed(LUMA_TACT_CALENDAR_ID, 'TACT')}
-      </div>
-    </div>
+    <div class="eop-content">
 
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Member Content</h2><div class="eop-section-line"></div></div>
-      <div class="eop-grid">
-        <div class="eop-card tc">
-          <div class="eop-card-icon">📊</div>
-          <h3>Strategy Sessions</h3>
-          <p>Deeper crypto planning, market context and small business enablement — recorded and archived by topic.</p>
-          <a class="eop-card-link" href="#">Browse archive →</a>
-        </div>
-        <div class="eop-card tc">
-          <div class="eop-card-icon">🎙️</div>
-          <h3>Guest Speakers</h3>
-          <p>Expert interviews and panels covering the topics that matter most to founders and creators in the new economy.</p>
-          <a class="eop-card-link" href="#">View sessions →</a>
-        </div>
-        <div class="eop-card tc">
-          <div class="eop-card-icon">🗳️</div>
-          <h3>Governance</h3>
-          <p>Participate in proposals and weighted voting that shapes the direction of The Agency Collective.</p>
-          <a class="eop-card-link" href="#">Open proposals →</a>
+      <div>
+        <div class="eop-lab-panel">
+          <div>
+            <span class="eop-lab-tag">Eligible</span>
+            <h3>The Agency Lab</h3>
+            <p>As a TACT holder you are eligible for invitations to The Agency Lab — our collaborative co-creation space for members working on active projects.</p>
+          </div>
+          <a class="eop-btn-primary" href="mailto:info@eopmedia.com?subject=Agency Lab Invitation Request">Express interest →</a>
         </div>
       </div>
+
+      <div>
+        <span class="eop-section-label">Upcoming Sessions</span>
+        <div class="eop-calendar">
+          <div class="eop-calendar-head">Member Sessions — Strategy, Guest Speakers &amp; Biweekly Q&amp;A</div>
+          ${calEmbed(LUMA_TACT_CALENDAR_ID)}
+        </div>
+      </div>
+
+      <div>
+        <span class="eop-section-label">Member Content</span>
+        <div class="eop-cards">
+          <div class="eop-card tact">
+            <div class="eop-card-icon">📚</div>
+            <span class="eop-card-tag">Knowledge base</span>
+            <span class="eop-card-title">The Library</span>
+            <span class="eop-card-desc">Articles, opinions, and training from select members — curated perspectives on building in the new economy.</span>
+            <a class="eop-card-link" href="${LIBRARY_URL}">Browse the library →</a>
+            <div class="eop-card-meta">
+              <span>Articles</span><span>·</span><span>Opinions</span><span>·</span><span>Training</span>
+            </div>
+          </div>
+          <div class="eop-card tact">
+            <div class="eop-card-icon">🗳️</div>
+            <span class="eop-card-tag">Community proposals</span>
+            <span class="eop-card-title">The Lab</span>
+            <span class="eop-card-desc">Review development proposals, leave comments, and vote on the ideas that should shape the collective's next chapter.</span>
+            <a class="eop-card-link" href="${LAB_URL}">View proposals →</a>
+            <div class="eop-card-meta">
+              <span>Proposals</span><span>·</span><span>Comments</span><span>·</span><span>Voting</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="eop-section-label">Tangem Setup Library</span>
+        <div class="eop-vid-grid">${vidCards()}</div>
+      </div>
+
     </div>
 
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Tangem Setup Library</h2><div class="eop-section-line"></div></div>
-      <div class="eop-video-grid">${vidCards()}</div>
-    </div>
-  </div></div>`;
+    ${footerHTML}
+  </div>`;
 
 const obstDash = addr => `
-  <div id="eop-db-wrap"><div class="eop-dash">
-    <div class="eop-header">
-      <div class="eop-header-left">
-        <h1>Observer Portal</h1>
-        <p>Welcome — your Tangem full-price benefit is active</p>
-        <div class="eop-wallet-tag">${short(addr)}</div>
+  <div id="eop-db-wrap">
+    ${navHTML('Observer Portal', 'eop-badge-obst', 'Observer')}
+
+    <div class="eop-hero">
+      <div class="eop-hero-token obst">
+        <img src="${OBST_TOKEN_IMG}" alt="OBST Token" onerror="this.style.display='none'">
       </div>
-      <div><div class="eop-tier-badge obst-badge"><span class="eop-badge-dot"></span>Observer</div></div>
-    </div>
-
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Upcoming Sessions</h2><div class="eop-section-line"></div></div>
-      <div class="eop-calendar">
-        <div class="eop-calendar-head"><h3>Biweekly Sessions — Trends, Capabilities &amp; Live Q&amp;A</h3></div>
-        ${calEmbed(LUMA_OBST_CALENDAR_ID, 'OBST')}
-      </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:12px;padding-left:4px">
-        Sessions are live only — not recorded. Register to receive your Zoom link.
-      </p>
-    </div>
-
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Tangem Setup Library</h2><div class="eop-section-line"></div></div>
-      <div class="eop-video-grid">${vidCards()}</div>
-    </div>
-
-    <div class="eop-section">
-      <div class="eop-section-head"><h2>Agency Collective</h2><div class="eop-section-line"></div></div>
-      <div class="eop-card oc" style="max-width:540px">
-        <div class="eop-card-icon">🚀</div>
-        <h3>Ready to go deeper?</h3>
-        <p>Agency Collective members get strategy sessions, guest speakers, governance and eligibility for The Agency Lab — all with a TACT token.</p>
-        <a class="eop-card-link" href="https://eopmedia.com/the-agency-collective/">Learn about membership →</a>
+      <div class="eop-hero-text">
+        <h1>Observer<br><em>Portal</em></h1>
+        <p>OBST token verified · Observer access active</p>
+        <span class="eop-wallet-tag">${short(addr)}</span>
       </div>
     </div>
-  </div></div>`;
 
-// ── INIT ───────────────────────────────────────
+    <div class="eop-content">
+
+      <div>
+        <span class="eop-section-label">Upcoming Sessions</span>
+        <div class="eop-calendar">
+          <div class="eop-calendar-head">Biweekly Sessions — Trends, Capabilities &amp; Live Q&amp;A</div>
+          ${calEmbed(LUMA_OBST_CALENDAR_ID)}
+        </div>
+        <p class="eop-calendar-note">Sessions are live only — not recorded. Register to receive your Zoom link.</p>
+      </div>
+
+      <div>
+        <span class="eop-section-label">Tangem Setup Library</span>
+        <div class="eop-vid-grid">${vidCards()}</div>
+      </div>
+
+      <div>
+        <span class="eop-section-label">Agency Collective</span>
+        <div class="eop-upgrade">
+          <div>
+            <h3>Ready to go <em>deeper?</em></h3>
+            <p>Full members get access to The Library, The Lab, strategy sessions, guest speakers, and eligibility for The Agency Lab — all with a TACT token.</p>
+          </div>
+          <a class="eop-btn-primary eop-btn-teal" href="${UPGRADE_URL}">Learn about membership →</a>
+        </div>
+      </div>
+
+    </div>
+
+    ${footerHTML}
+  </div>`;
+
+// ── INIT ──────────────────────────────────────────────────────
 async function init() {
   const root = document.getElementById('eop-dashboard-root');
   if (!root) return;
   injectStyles();
   root.innerHTML = loading();
 
-  // Debug — log all ThirdWeb localStorage keys
-  console.log("ThirdWeb keys:", Object.keys(localStorage).filter(k => k.startsWith('thirdweb')));
-
   const address = getWallet();
-  console.log("Wallet found:", address);
-
   if (!address) { root.innerHTML = noWallet(); return; }
 
   try {
@@ -614,18 +751,16 @@ async function init() {
       getBalance(address, TACT_ADDRESS),
       getBalance(address, OBST_ADDRESS)
     ]);
-    console.log("Final result — TACT:", tact, "OBST:", obst);
     if      (tact > 0) root.innerHTML = tactDash(address);
     else if (obst > 0) root.innerHTML = obstDash(address);
     else               root.innerHTML = noAccess(address);
   } catch(e) {
-    console.error("Init error:", e);
+    console.error("Dashboard init error:", e);
     root.innerHTML = `
       <div id="eop-db-wrap"><div class="eop-center"><div class="eop-notoken">
-        <div class="eop-logo-mark" style="margin-bottom:16px">EOP Media</div>
         <h2>Verification error</h2>
         <p>Could not verify your token. Please try refreshing.</p>
-        <a class="eop-btn" href="${MEMBERS_PAGE}" style="margin-top:16px">Back to members page →</a>
+        <a class="eop-btn-primary" href="${MEMBERS_PAGE}" style="margin-top:8px;">Back to members page →</a>
       </div></div></div>`;
   }
 }
