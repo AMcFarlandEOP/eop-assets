@@ -474,6 +474,23 @@ const css = `
     #eop-db-wrap .eop-footer { padding: 14px 20px; flex-direction: column; align-items: flex-start; gap: 10px; }
     #eop-db-wrap .eop-lab-panel, #eop-db-wrap .eop-upgrade { flex-direction: column; }
   }
+#eop-db-wrap .eop-disconnect {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #5f5e5a;
+    background: none;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  #eop-db-wrap .eop-disconnect:hover {
+    color: #f0997b;
+    border-color: rgba(240,153,123,0.3);
+  }
 `;
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -562,7 +579,10 @@ const navHTML = (portalLabel, badgeClass, badgeText) => `
       <div class="eop-nav-divider"></div>
       <span class="eop-nav-portal">${portalLabel}</span>
     </div>
-    <span class="eop-badge ${badgeClass}">${badgeText}</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="eop-badge ${badgeClass}">${badgeText}</span>
+      <button class="eop-disconnect" onclick="eopDisconnect()">Disconnect</button>
+    </div>
   </div>`;
 
 const footerHTML = `
@@ -764,7 +784,20 @@ async function init() {
       </div></div></div>`;
   }
 }
+window.eopDisconnect = function() {
+  // Clear the session cookie
+  document.cookie = "eop_wallet_verified=; path=/; SameSite=Strict; max-age=0";
+  // Clear ThirdWeb localStorage session
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('thirdweb')) localStorage.removeItem(k);
+    });
+  } catch(_) {}
+  // Redirect to members page
+  window.location.href = MEMBERS_PAGE;
+};
 
+init();
 init();
 
 })();
