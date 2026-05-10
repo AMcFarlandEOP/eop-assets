@@ -785,16 +785,26 @@ async function init() {
   }
 }
 window.eopDisconnect = function() {
-  // Clear the session cookie
+  // Clear session cookie
   document.cookie = "eop_wallet_verified=; path=/; SameSite=Strict; max-age=0";
-  // Clear ThirdWeb localStorage session
+  // Clear all ThirdWeb localStorage keys
   try {
     Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('thirdweb')) localStorage.removeItem(k);
+      if (k.includes('thirdweb') || k.includes('walletconnect') || k.includes('wc@')) {
+        localStorage.removeItem(k);
+      }
     });
   } catch(_) {}
-  // Redirect to members page
-  window.location.href = MEMBERS_PAGE;
+  // Clear sessionStorage too
+  try { sessionStorage.clear(); } catch(_) {}
+  // Clear ThirdWeb IndexedDB
+  try {
+    ['WALLET_CONNECT_V2_INDEXED_DB', 'thirdweb', 'wc@2'].forEach(dbName => {
+      indexedDB.deleteDatabase(dbName);
+    });
+  } catch(_) {}
+  // Redirect with cache-bust to prevent auto-reconnect
+  window.location.href = MEMBERS_PAGE + '?disconnected=1&t=' + Date.now();
 };
 
 init();
