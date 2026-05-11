@@ -785,26 +785,13 @@ async function init() {
   }
 }
 window.eopDisconnect = function() {
-  // Set the persistent disconnect flag — gate reads this on load and forces SDK disconnect
-  try { sessionStorage.setItem("eop_explicit_disconnect", "1"); } catch(_) {}
-  // Clear session cookie
+  // Clear EOP session cookie immediately
   document.cookie = "eop_wallet_verified=; path=/; SameSite=Strict; max-age=0";
-  // Clear all ThirdWeb localStorage keys
-  try {
-    Object.keys(localStorage).forEach(k => {
-      if (k.includes('thirdweb') || k.includes('walletconnect') || k.includes('wc@')) {
-        localStorage.removeItem(k);
-      }
-    });
-  } catch(_) {}
-  // Clear ThirdWeb IndexedDB
-  try {
-    ['WALLET_CONNECT_V2_INDEXED_DB', 'thirdweb', 'wc@2'].forEach(dbName => {
-      indexedDB.deleteDatabase(dbName);
-    });
-  } catch(_) {}
-  // Redirect — no ?disconnected param needed; sessionStorage flag handles it
-  window.location.href = MEMBERS_PAGE;
+  // Redirect to the gate page with action=disconnect.
+  // The gate app (where the ThirdWeb SDK is live) handles the full
+  // SDK disconnect sequence, including sending wc_sessionDelete to
+  // the WalletConnect relay server to invalidate the pairing.
+  window.location.href = MEMBERS_PAGE + "?action=disconnect";
 };
 
 init();
