@@ -785,6 +785,8 @@ async function init() {
   }
 }
 window.eopDisconnect = function() {
+  // Set the persistent disconnect flag — gate reads this on load and forces SDK disconnect
+  try { sessionStorage.setItem("eop_explicit_disconnect", "1"); } catch(_) {}
   // Clear session cookie
   document.cookie = "eop_wallet_verified=; path=/; SameSite=Strict; max-age=0";
   // Clear all ThirdWeb localStorage keys
@@ -795,16 +797,14 @@ window.eopDisconnect = function() {
       }
     });
   } catch(_) {}
-  // Clear sessionStorage too
-  try { sessionStorage.clear(); } catch(_) {}
   // Clear ThirdWeb IndexedDB
   try {
     ['WALLET_CONNECT_V2_INDEXED_DB', 'thirdweb', 'wc@2'].forEach(dbName => {
       indexedDB.deleteDatabase(dbName);
     });
   } catch(_) {}
-  // Redirect with cache-bust to prevent auto-reconnect
-  window.location.href = MEMBERS_PAGE + '?disconnected=1&t=' + Date.now();
+  // Redirect — no ?disconnected param needed; sessionStorage flag handles it
+  window.location.href = MEMBERS_PAGE;
 };
 
 init();
