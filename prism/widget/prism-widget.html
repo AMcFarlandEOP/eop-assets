@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRISM Widget</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --eop-black: #0a0a0a;
+    --eop-white: #f5f4f0;
+    --eop-gold: #c9a84c;
+    --eop-gold-light: #e8c96a;
+    --eop-gold-dim: rgba(201,168,76,0.15);
+    --eop-border: rgba(201,168,76,0.3);
+    --eop-text: #e8e6df;
+    --eop-muted: rgba(232,230,223,0.55);
+    --radius: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  #prism-widget {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--eop-black);
+    border: 1px solid var(--eop-border);
+    border-top: 3px solid var(--eop-gold);
+    color: var(--eop-text);
+    max-width: 780px;
+    margin: 2rem auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle background texture */
+  #prism-widget::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 80px,
+        rgba(201,168,76,0.02) 80px,
+        rgba(201,168,76,0.02) 81px
+      );
+    pointer-events: none;
+  }
+
+  .prism-header {
+    padding: 1.5rem 2rem 1.25rem;
+    border-bottom: 1px solid var(--eop-border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .prism-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--eop-gold);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .prism-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--eop-gold);
+  }
+
+  .prism-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--eop-white);
+    line-height: 1.3;
+  }
+
+  .prism-subtitle {
+    font-size: 0.8rem;
+    color: var(--eop-muted);
+    margin-top: 0.3rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .prism-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--eop-black);
+    background: var(--eop-gold);
+    padding: 0.25rem 0.6rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+  }
+
+  .prism-intro {
+    padding: 1.25rem 2rem;
+    font-size: 0.85rem;
+    color: var(--eop-muted);
+    line-height: 1.7;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    font-weight: 300;
+  }
+
+  .prism-intro strong {
+    color: var(--eop-text);
+    font-weight: 500;
+  }
+
+  .cards-label {
+    padding: 1rem 2rem 0.6rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--eop-gold);
+  }
+
+  .prism-cards {
+    padding: 0 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 560px) {
+    .prism-cards { grid-template-columns: 1fr; }
+    .prism-header { flex-direction: column; }
+  }
+
+  .prism-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    color: inherit;
+  }
+
+  .prism-card:hover {
+    background: var(--eop-gold-dim);
+    border-color: var(--eop-gold);
+  }
+
+  .prism-card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .card-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--eop-gold);
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+  }
+
+  .card-prompt {
+    font-size: 0.8rem;
+    color: var(--eop-text);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .card-arrow {
+    display: inline-block;
+    margin-left: 0.3rem;
+    opacity: 0;
+    transition: all 0.2s ease;
+    color: var(--eop-gold);
+    font-size: 0.75rem;
+  }
+
+  .prism-footer {
+    padding: 1rem 2rem 1.25rem;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .footer-note {
+    font-size: 0.72rem;
+    color: var(--eop-muted);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .prism-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--eop-gold);
+    text-decoration: none;
+    border: 1px solid var(--eop-border);
+    padding: 0.4rem 0.9rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .prism-cta:hover {
+    background: var(--eop-gold);
+    color: var(--eop-black);
+    border-color: var(--eop-gold);
+  }
+
+  /* Copied state */
+  .prism-card.copied {
+    border-color: var(--eop-gold);
+    background: var(--eop-gold-dim);
+  }
+
+  .copied-notice {
+    display: none;
+    font-size: 0.65rem;
+    color: var(--eop-gold);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+
+  .prism-card.copied .copied-notice {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div id="prism-widget">
+
+  <div class="prism-header">
+    <div>
+      <div class="prism-eyebrow">EOP Media</div>
+      <div class="prism-title">PRISM — Read This With Your Context</div>
+      <div class="prism-subtitle">Personalized Relevant Intelligence Synthesized for Meaning</div>
+    </div>
+    <div class="prism-badge">Free Tool</div>
+  </div>
+
+  <div class="prism-intro">
+    This article covers stablecoin infrastructure, Visa settlement, and Tangem Pay. 
+    <strong>The prompts below are starting points — not answers.</strong> 
+    Copy one into your AI of choice (Claude, ChatGPT, Perplexity) and add your own context 
+    to make the intelligence yours. Members of The Agency Collective get a personalized version built around their profile.
+  </div>
+
+  <div class="cards-label">Choose Your Starting Point</div>
+
+  <div class="prism-cards" id="prism-cards-container">
+    <!-- Cards injected by JS from JSON -->
+  </div>
+
+  <div class="prism-footer">
+    <div class="footer-note">Clicking a prompt copies it to your clipboard.</div>
+    <a class="prism-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">
+      Get Your Personalized Profile →
+    </a>
+  </div>
+
+</div>
+
+<script>
+  // Prompt cards data — swap this out per post by loading a different JSON file
+  const promptCards = [
+    {
+      tag: "If you're new to stablecoins",
+      prompt: "I'm new to crypto and just read about Visa settling transactions in USDC stablecoins. Can you explain what a stablecoin actually is, why Visa would use one instead of regular dollars, and what this means for someone who doesn't currently hold any cryptocurrency?"
+    },
+    {
+      tag: "If you follow markets",
+      prompt: "Visa's stablecoin settlement volume hit $7B annualized in April 2026, doubling in one quarter across 9 blockchains. Put this in context for me: how does this compare to traditional payment settlement volumes, what does the pace of scaling signal, and what are the second-order effects I should be watching?"
+    },
+    {
+      tag: "If you're evaluating Tangem Pay",
+      prompt: "I'm considering using Tangem Pay to spend USDC from cold storage via a virtual Visa card. Walk me through the actual security architecture: what happens at the point of transaction, where could a vulnerability exist, and what questions should I be asking before I load funds onto the spending card?"
+    },
+    {
+      tag: "If you run a small business",
+      prompt: "I own a small business and I'm exploring whether accepting USDC stablecoin payments makes sense. Given the Visa settlement infrastructure that's now live, what are the practical steps to get started, what are the tax implications I need to understand, and what risks should I stress-test before committing?"
+    },
+    {
+      tag: "If you're tracking regulation",
+      prompt: "The GENIUS Act passed in July 2025 and appears to have enabled Visa's U.S. stablecoin rollout. Break down what the GENIUS Act actually established, what it left unresolved, and what regulatory developments in the next 12 months would most change the stablecoin landscape for individual holders and businesses?"
+    },
+    {
+      tag: "If you're deciding your path",
+      prompt: "I've been watching the crypto and stablecoin space from the sidelines. I understand the infrastructure is maturing but I haven't acted yet. Given my specific situation — [describe your situation here] — help me think through whether now is the right time to enter, what my actual first step should be, and what I need to have in place before I do."
+    }
+  ];
+
+  // Render cards
+  const container = document.getElementById('prism-cards-container');
+
+  promptCards.forEach((card, index) => {
+    const el = document.createElement('button');
+    el.className = 'prism-card';
+    el.innerHTML = `
+      <div class="card-tag">${card.tag}</div>
+      <div class="card-prompt">${card.prompt}<span class="card-arrow">→</span></div>
+      <div class="copied-notice">Copied to clipboard</div>
+    `;
+
+    el.addEventListener('click', () => {
+      navigator.clipboard.writeText(card.prompt).then(() => {
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 2500);
+      });
+    });
+
+    container.appendChild(el);
+  });
+</script>
+
+</body>
+</html>

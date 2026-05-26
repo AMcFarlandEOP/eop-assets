@@ -1,0 +1,46 @@
+{
+  "post": {
+    "title": "The Bridge Has Been Built. Are You Ready to Cross It?",
+    "slug": "tangem-pay-stablecoin-bridge",
+    "published": "2026-05-26",
+    "topics": ["stablecoins", "Visa", "Tangem Pay", "USDC", "GENIUS Act", "crypto infrastructure"]
+  },
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "New to stablecoins",
+      "tag": "If you're new to stablecoins",
+      "prompt": "I'm new to crypto and just read about Visa settling transactions in USDC stablecoins. Can you explain what a stablecoin actually is, why Visa would use one instead of regular dollars, and what this means for someone who doesn't currently hold any cryptocurrency?"
+    },
+    {
+      "id": "card-02",
+      "audience": "Market-aware reader",
+      "tag": "If you follow markets",
+      "prompt": "Visa's stablecoin settlement volume hit $7B annualized in April 2026, doubling in one quarter across 9 blockchains. Put this in context for me: how does this compare to traditional payment settlement volumes, what does the pace of scaling signal, and what are the second-order effects I should be watching?"
+    },
+    {
+      "id": "card-03",
+      "audience": "Evaluating Tangem Pay",
+      "tag": "If you're evaluating Tangem Pay",
+      "prompt": "I'm considering using Tangem Pay to spend USDC from cold storage via a virtual Visa card. Walk me through the actual security architecture: what happens at the point of transaction, where could a vulnerability exist, and what questions should I be asking before I load funds onto the spending card?"
+    },
+    {
+      "id": "card-04",
+      "audience": "Small business owner",
+      "tag": "If you run a small business",
+      "prompt": "I own a small business and I'm exploring whether accepting USDC stablecoin payments makes sense. Given the Visa settlement infrastructure that's now live, what are the practical steps to get started, what are the tax implications I need to understand, and what risks should I stress-test before committing?"
+    },
+    {
+      "id": "card-05",
+      "audience": "Regulation tracker",
+      "tag": "If you're tracking regulation",
+      "prompt": "The GENIUS Act passed in July 2025 and appears to have enabled Visa's U.S. stablecoin rollout. Break down what the GENIUS Act actually established, what it left unresolved, and what regulatory developments in the next 12 months would most change the stablecoin landscape for individual holders and businesses?"
+    },
+    {
+      "id": "card-06",
+      "audience": "Sideline observer ready to act",
+      "tag": "If you're deciding your path",
+      "prompt": "I've been watching the crypto and stablecoin space from the sidelines. I understand the infrastructure is maturing but I haven't acted yet. Given my specific situation — [describe your situation here] — help me think through whether now is the right time to enter, what my actual first step should be, and what I need to have in place before I do."
+    }
+  ]
+}
