@@ -5,253 +5,231 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PRISM Widget</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-  :root {
-    --eop-black: #0a0a0a;
-    --eop-white: #f5f4f0;
-    --eop-gold: #c9a84c;
-    --eop-gold-light: #e8c96a;
-    --eop-gold-dim: rgba(201,168,76,0.15);
-    --eop-border: rgba(201,168,76,0.3);
-    --eop-text: #e8e6df;
-    --eop-muted: rgba(232,230,223,0.55);
-    --radius: 2px;
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@400;500&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  #prism-widget {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--eop-black);
-    border: 1px solid var(--eop-border);
-    border-top: 3px solid var(--eop-gold);
-    color: var(--eop-text);
-    max-width: 780px;
-    margin: 2rem auto;
+  body {
+    background: transparent;
+    margin: 0;
     padding: 0;
-    position: relative;
-    overflow: hidden;
   }
 
-  /* Subtle background texture */
-  #prism-widget::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: 
-      repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 80px,
-        rgba(201,168,76,0.02) 80px,
-        rgba(201,168,76,0.02) 81px
-      );
-    pointer-events: none;
+  #prism-widget {
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    border: 1px solid #d9d5ce;
+    border-left: 4px solid #A41623;
+    color: #1a1816;
+    width: 100%;
   }
 
+  /* ── HEADER ROW ── */
   .prism-header {
-    padding: 1.5rem 2rem 1.25rem;
-    border-bottom: 1px solid var(--eop-border);
+    padding: 1rem 1.25rem 0.75rem;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 1rem;
+    border-bottom: 1px solid #f0ede8;
   }
 
   .prism-eyebrow {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--eop-gold);
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .prism-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 16px;
-    height: 1px;
-    background: var(--eop-gold);
+    color: #A41623;
+    margin-bottom: 0.3rem;
   }
 
   .prism-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--eop-white);
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #1a1816;
     line-height: 1.3;
   }
 
-  .prism-subtitle {
-    font-size: 0.8rem;
-    color: var(--eop-muted);
-    margin-top: 0.3rem;
-    font-weight: 300;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  .prism-badge {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--eop-black);
-    background: var(--eop-gold);
-    padding: 0.25rem 0.6rem;
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 0.25rem;
-  }
-
+  /* ── INTRO (always visible) ── */
   .prism-intro {
-    padding: 1.25rem 2rem;
-    font-size: 0.85rem;
-    color: var(--eop-muted);
-    line-height: 1.7;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+    padding: 0.9rem 1.25rem 1rem;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 0.875rem;
     font-weight: 300;
+    color: #3d3a36;
+    line-height: 1.75;
   }
 
   .prism-intro strong {
-    color: var(--eop-text);
+    font-weight: 400;
+    color: #1a1816;
+  }
+
+  /* ── TOGGLE BUTTON ── */
+  .prism-toggle-row {
+    padding: 0 1.25rem 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .prism-toggle-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7a7670;
+  }
+
+  .prism-toggle-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
     font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: #A41623;
+    border: none;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .prism-toggle-btn:hover {
+    background: #7a0f19;
+  }
+
+  /* ── CARDS PANEL (hidden by default) ── */
+  .prism-cards-panel {
+    display: none;
+    border-top: 1px solid #f0ede8;
+    padding: 1rem 1.25rem 1.25rem;
+    background: #f4f1ec;
+  }
+
+  .prism-cards-panel.open {
+    display: block;
   }
 
   .cards-label {
-    padding: 1rem 2rem 0.6rem;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--eop-gold);
+    color: #7a7670;
+    margin-bottom: 0.75rem;
   }
 
   .prism-cards {
-    padding: 0 2rem 1.5rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+    gap: 0.6rem;
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 540px) {
     .prism-cards { grid-template-columns: 1fr; }
-    .prism-header { flex-direction: column; }
   }
 
   .prism-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(201,168,76,0.15);
-    padding: 1rem 1.1rem;
+    background: #ffffff;
+    border: 1px solid #d9d5ce;
+    padding: 0.85rem 1rem;
     cursor: pointer;
-    transition: all 0.2s ease;
-    position: relative;
+    transition: border-color 0.15s, background 0.15s;
     text-align: left;
     width: 100%;
     color: inherit;
+    position: relative;
   }
 
   .prism-card:hover {
-    background: var(--eop-gold-dim);
-    border-color: var(--eop-gold);
-  }
-
-  .prism-card:hover .card-arrow {
-    opacity: 1;
-    transform: translateX(3px);
+    border-color: #A41623;
+    background: #fdf8f7;
   }
 
   .card-tag {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Mono', monospace;
     font-size: 0.55rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--eop-gold);
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
+    color: #A41623;
+    margin-bottom: 0.4rem;
   }
 
   .card-prompt {
-    font-size: 0.8rem;
-    color: var(--eop-text);
-    line-height: 1.5;
-    font-weight: 400;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: #3d3a36;
+    line-height: 1.55;
   }
 
-  .card-arrow {
-    display: inline-block;
-    margin-left: 0.3rem;
-    opacity: 0;
-    transition: all 0.2s ease;
-    color: var(--eop-gold);
-    font-size: 0.75rem;
+  .card-copy-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    color: #7a7670;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
-  .prism-footer {
-    padding: 1rem 2rem 1.25rem;
-    border-top: 1px solid rgba(201,168,76,0.1);
+  .card-copy-hint::before {
+    content: '↗';
+    color: #A41623;
+  }
+
+  .prism-card.copied {
+    border-color: #A41623;
+    background: #fdf8f7;
+  }
+
+  .prism-card.copied .card-copy-hint {
+    color: #A41623;
+    font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  .prism-cards-footer {
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #d9d5ce;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .footer-note {
-    font-size: 0.72rem;
-    color: var(--eop-muted);
-    font-weight: 300;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    color: #7a7670;
     font-style: italic;
   }
 
-  .prism-cta {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--eop-gold);
-    text-decoration: none;
-    border: 1px solid var(--eop-border);
-    padding: 0.4rem 0.9rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .prism-cta:hover {
-    background: var(--eop-gold);
-    color: var(--eop-black);
-    border-color: var(--eop-gold);
-  }
-
-  /* Copied state */
-  .prism-card.copied {
-    border-color: var(--eop-gold);
-    background: var(--eop-gold-dim);
-  }
-
-  .copied-notice {
-    display: none;
-    font-size: 0.65rem;
-    color: var(--eop-gold);
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
+  .footer-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-top: 0.4rem;
+    color: #A41623;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(164,22,35,0.3);
+    padding-bottom: 1px;
+    transition: border-color 0.2s;
   }
 
-  .prism-card.copied .copied-notice {
-    display: block;
+  .footer-cta:hover {
+    border-color: #A41623;
   }
 </style>
 </head>
@@ -261,37 +239,37 @@
 
   <div class="prism-header">
     <div>
-      <div class="prism-eyebrow">EOP Media</div>
-      <div class="prism-title">PRISM — Read This With Your Context</div>
-      <div class="prism-subtitle">Personalized Relevant Intelligence Synthesized for Meaning</div>
+      <div class="prism-eyebrow">EOP Media · PRISM</div>
+      <div class="prism-title">Read This With Your AI</div>
     </div>
-    <div class="prism-badge">Free Tool</div>
   </div>
 
   <div class="prism-intro">
-    This article covers stablecoin infrastructure, Visa settlement, and Tangem Pay. 
-    <strong>The prompts below are starting points — not answers.</strong> 
-    Copy one into your AI of choice (Claude, ChatGPT, Perplexity) and add your own context 
-    to make the intelligence yours. Members of The Agency Collective get a personalized version built around their profile.
+    This article covers stablecoin infrastructure, Visa settlement, and Tangem Pay.
+    The prompts below are starting points — not answers. Copy one into your AI of choice
+    (Claude, ChatGPT, Perplexity) and add your own context to make the intelligence yours.
+    <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
   </div>
 
-  <div class="cards-label">Choose Your Starting Point</div>
-
-  <div class="prism-cards" id="prism-cards-container">
-    <!-- Cards injected by JS from JSON -->
+  <div class="prism-toggle-row">
+    <span class="prism-toggle-hint">6 prompts built for this article</span>
+    <button class="prism-toggle-btn" id="prism-toggle">Explore prompts ↓</button>
   </div>
 
-  <div class="prism-footer">
-    <div class="footer-note">Clicking a prompt copies it to your clipboard.</div>
-    <a class="prism-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">
-      Get Your Personalized Profile →
-    </a>
+  <div class="prism-cards-panel" id="prism-panel">
+    <div class="cards-label">Choose your starting point — click any card to copy</div>
+    <div class="prism-cards" id="prism-cards-container"></div>
+    <div class="prism-cards-footer">
+      <span class="footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">
+        Get your personalized profile →
+      </a>
+    </div>
   </div>
 
 </div>
 
 <script>
-  // Prompt cards data — swap this out per post by loading a different JSON file
   const promptCards = [
     {
       tag: "If you're new to stablecoins",
@@ -319,26 +297,34 @@
     }
   ];
 
-  // Render cards
   const container = document.getElementById('prism-cards-container');
+  const toggle = document.getElementById('prism-toggle');
+  const panel = document.getElementById('prism-panel');
 
-  promptCards.forEach((card, index) => {
+  promptCards.forEach((card) => {
     const el = document.createElement('button');
     el.className = 'prism-card';
     el.innerHTML = `
       <div class="card-tag">${card.tag}</div>
-      <div class="card-prompt">${card.prompt}<span class="card-arrow">→</span></div>
-      <div class="copied-notice">Copied to clipboard</div>
+      <div class="card-prompt">${card.prompt}</div>
+      <div class="card-copy-hint">Copy prompt</div>
     `;
-
     el.addEventListener('click', () => {
       navigator.clipboard.writeText(card.prompt).then(() => {
         el.classList.add('copied');
-        setTimeout(() => el.classList.remove('copied'), 2500);
+        el.querySelector('.card-copy-hint').textContent = 'Copied to clipboard';
+        setTimeout(() => {
+          el.classList.remove('copied');
+          el.querySelector('.card-copy-hint').textContent = 'Copy prompt';
+        }, 2500);
       });
     });
-
     container.appendChild(el);
+  });
+
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('open');
+    toggle.textContent = isOpen ? 'Collapse ↑' : 'Explore prompts ↓';
   });
 </script>
 
