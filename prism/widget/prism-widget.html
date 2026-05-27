@@ -8,13 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@400;500&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html, body {
-    background: transparent;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
+  html, body { background: transparent; margin: 0; padding: 0; overflow: hidden; }
 
   #prism-widget {
     font-family: 'Poppins', sans-serif;
@@ -27,10 +21,6 @@
 
   .prism-header {
     padding: 1rem 1.25rem 0.75rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
     border-bottom: 1px solid #f0ede8;
   }
 
@@ -41,7 +31,7 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #A41623;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
   }
 
   .prism-acronym {
@@ -51,7 +41,6 @@
     letter-spacing: 0.06em;
     color: #7a7670;
     margin-bottom: 0.4rem;
-    line-height: 1.4;
   }
 
   .prism-title {
@@ -63,7 +52,7 @@
   }
 
   .prism-intro {
-    padding: 0.9rem 1.25rem 1rem;
+    padding: 0.9rem 1.25rem 0.85rem;
     font-family: 'IBM Plex Serif', serif;
     font-size: 0.875rem;
     font-weight: 300;
@@ -76,19 +65,35 @@
     color: #1a1816;
   }
 
-  .prism-toggle-row {
+  .prism-actions {
     padding: 0 1.25rem 0.9rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
-  .prism-toggle-hint {
+  .prism-pdf-btn {
     font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
+    font-size: 0.6rem;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #7a7670;
+    color: #A41623;
+    background: #ffffff;
+    border: 1px solid #A41623;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .prism-pdf-btn:hover {
+    background: #A41623;
+    color: #ffffff;
   }
 
   .prism-toggle-btn {
@@ -99,14 +104,23 @@
     text-transform: uppercase;
     color: #ffffff;
     background: #A41623;
-    border: none;
+    border: 1px solid #A41623;
     padding: 0.45rem 1rem;
     cursor: pointer;
     transition: background 0.2s;
     white-space: nowrap;
   }
 
-  .prism-toggle-btn:hover { background: #7a0f19; }
+  .prism-toggle-btn:hover { background: #7a0f19; border-color: #7a0f19; }
+
+  .prism-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    color: #7a7670;
+    flex: 1;
+    min-width: 120px;
+  }
 
   .prism-cards-panel {
     display: none;
@@ -135,6 +149,7 @@
 
   @media (max-width: 540px) {
     .prism-cards { grid-template-columns: 1fr; }
+    .prism-actions { flex-direction: column; align-items: flex-start; }
   }
 
   .prism-card {
@@ -148,10 +163,7 @@
     color: inherit;
   }
 
-  .prism-card:hover {
-    border-color: #A41623;
-    background: #fdf8f7;
-  }
+  .prism-card:hover { border-color: #A41623; background: #fdf8f7; }
 
   .card-tag {
     font-family: 'DM Mono', monospace;
@@ -183,7 +195,6 @@
   }
 
   .card-copy-hint::before { content: '↗'; color: #A41623; }
-
   .prism-card.copied { border-color: #A41623; background: #fdf8f7; }
   .prism-card.copied .card-copy-hint { color: #A41623; font-weight: 500; }
 
@@ -220,35 +231,53 @@
   }
 
   .footer-cta:hover { border-color: #A41623; }
+
+  .prism-loading {
+    padding: 1rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: #7a7670;
+    letter-spacing: 0.08em;
+  }
+
+  .prism-error {
+    padding: 0.75rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: #A41623;
+    background: #fdf8f7;
+    border-top: 1px solid #f0ede8;
+  }
 </style>
 </head>
 <body>
-
 <div id="prism-widget">
 
   <div class="prism-header">
-    <div>
-      <div class="prism-eyebrow">PRISM by EOP Media</div>
-      <div class="prism-acronym">Personalized Relevant Intelligence Synthesized for Meaning</div>
-      <div class="prism-title">Engage Your AI to Go Deeper on This Article</div>
-    </div>
+    <div class="prism-eyebrow">PRISM by EOP Media</div>
+    <div class="prism-acronym">Personalized Relevant Intelligence Synthesized for Meaning</div>
+    <div class="prism-title">Engage Your AI to Go Deeper on This Article</div>
   </div>
 
-  <div class="prism-intro">
-    This article covers stablecoin infrastructure, Visa settlement, and Tangem Pay.
-    The prompts below are starting points — not answers. Copy one into your AI of choice
-    (Claude, ChatGPT, Perplexity) and add your own context to make the intelligence yours.
-    <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  <div class="prism-intro" id="prism-intro">
+    Loading article context...
   </div>
 
-  <div class="prism-toggle-row">
-    <span class="prism-toggle-hint">6 prompts built for this article</span>
-    <button class="prism-toggle-btn" id="prism-toggle">Explore prompts ↓</button>
+  <div class="prism-actions">
+    <span class="prism-hint" id="prism-hint">Loading prompts...</span>
+    <a class="prism-pdf-btn" id="prism-pdf-btn" href="#" target="_blank" style="display:none;">
+      ↓ Download PDF Companion
+    </a>
+    <button class="prism-toggle-btn" id="prism-toggle" style="display:none;">
+      Explore Prompts ↓
+    </button>
   </div>
 
   <div class="prism-cards-panel" id="prism-panel">
     <div class="cards-label">Choose your starting point — click any card to copy</div>
-    <div class="prism-cards" id="prism-cards-container"></div>
+    <div class="prism-cards" id="prism-cards-container">
+      <div class="prism-loading">Loading prompt cards...</div>
+    </div>
     <div class="prism-cards-footer">
       <span class="footer-note">Clicking a prompt copies it to your clipboard.</span>
       <a class="footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">
@@ -262,63 +291,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.contentWindow.min.js"></script>
 
 <script>
-  const promptCards = [
-    {
-      tag: "If you're new to stablecoins",
-      prompt: "I'm new to crypto and just read about Visa settling transactions in USDC stablecoins. Can you explain what a stablecoin actually is, why Visa would use one instead of regular dollars, and what this means for someone who doesn't currently hold any cryptocurrency?"
-    },
-    {
-      tag: "If you follow markets",
-      prompt: "Visa's stablecoin settlement volume hit $7B annualized in April 2026, doubling in one quarter across 9 blockchains. Put this in context for me: how does this compare to traditional payment settlement volumes, what does the pace of scaling signal, and what are the second-order effects I should be watching?"
-    },
-    {
-      tag: "If you're evaluating Tangem Pay",
-      prompt: "I'm considering using Tangem Pay to spend USDC from cold storage via a virtual Visa card. Walk me through the actual security architecture: what happens at the point of transaction, where could a vulnerability exist, and what questions should I be asking before I load funds onto the spending card?"
-    },
-    {
-      tag: "If you run a small business",
-      prompt: "I own a small business and I'm exploring whether accepting USDC stablecoin payments makes sense. Given the Visa settlement infrastructure that's now live, what are the practical steps to get started, what are the tax implications I need to understand, and what risks should I stress-test before committing?"
-    },
-    {
-      tag: "If you're tracking regulation",
-      prompt: "The GENIUS Act passed in July 2025 and appears to have enabled Visa's U.S. stablecoin rollout. Break down what the GENIUS Act actually established, what it left unresolved, and what regulatory developments in the next 12 months would most change the stablecoin landscape for individual holders and businesses?"
-    },
-    {
-      tag: "If you're deciding your path",
-      prompt: "I've been watching the crypto and stablecoin space from the sidelines. I understand the infrastructure is maturing but I haven't acted yet. Given my specific situation — [describe your situation here] — help me think through whether now is the right time to enter, what my actual first step should be, and what I need to have in place before I do."
-    }
-  ];
+  // ── CONFIG ──
+  // These values are set by window.PRISM_CONFIG injected by the parent page.
+  // Fallback defaults are for standalone testing only.
+  const config = window.PRISM_CONFIG || {
+    intro: "This article explores the gap between information and meaning — and how PRISM, AEO, and AI-era thought leadership change what it means to create content worth synthesizing. The prompts below are starting points, not answers. Copy one into your AI of choice and add your own context.",
+    pdf_url: "https://amcfarlandeop.github.io/eop-assets/prism/pdfs/prism-philosophy.pdf",
+    cards_url: "https://amcfarlandeop.github.io/eop-assets/prism/prompt-cards/prism-philosophy.json"
+  };
 
-  const container = document.getElementById('prism-cards-container');
+  // ── RENDER INTRO ──
+  document.getElementById('prism-intro').innerHTML =
+    config.intro + ' <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>';
+
+  // ── RENDER PDF BUTTON ──
+  const pdfBtn = document.getElementById('prism-pdf-btn');
+  if (config.pdf_url) {
+    pdfBtn.href = config.pdf_url;
+    pdfBtn.style.display = 'inline-block';
+  }
+
+  // ── LOAD PROMPT CARDS ──
   const toggle = document.getElementById('prism-toggle');
   const panel = document.getElementById('prism-panel');
+  const container = document.getElementById('prism-cards-container');
+  const hint = document.getElementById('prism-hint');
 
-  promptCards.forEach((card) => {
-    const el = document.createElement('button');
-    el.className = 'prism-card';
-    el.innerHTML = `
-      <div class="card-tag">${card.tag}</div>
-      <div class="card-prompt">${card.prompt}</div>
-      <div class="card-copy-hint">Copy prompt</div>
-    `;
-    el.addEventListener('click', () => {
-      navigator.clipboard.writeText(card.prompt).then(() => {
-        el.classList.add('copied');
-        el.querySelector('.card-copy-hint').textContent = 'Copied to clipboard';
-        setTimeout(() => {
-          el.classList.remove('copied');
-          el.querySelector('.card-copy-hint').textContent = 'Copy prompt';
-        }, 2500);
+  fetch(config.cards_url)
+    .then(r => {
+      if (!r.ok) throw new Error('Could not load prompt cards');
+      return r.json();
+    })
+    .then(data => {
+      const cards = data.cards;
+      hint.textContent = `${cards.length} prompts built for this article`;
+      toggle.style.display = 'inline-block';
+      container.innerHTML = '';
+
+      cards.forEach(card => {
+        const el = document.createElement('button');
+        el.className = 'prism-card';
+        el.innerHTML = `
+          <div class="card-tag">${card.tag}</div>
+          <div class="card-prompt">${card.prompt}</div>
+          <div class="card-copy-hint">Copy prompt</div>
+        `;
+        el.addEventListener('click', () => {
+          navigator.clipboard.writeText(card.prompt).then(() => {
+            el.classList.add('copied');
+            el.querySelector('.card-copy-hint').textContent = 'Copied to clipboard';
+            setTimeout(() => {
+              el.classList.remove('copied');
+              el.querySelector('.card-copy-hint').textContent = 'Copy prompt';
+            }, 2500);
+          });
+        });
+        container.appendChild(el);
       });
+    })
+    .catch(err => {
+      hint.textContent = 'Prompts unavailable';
+      container.innerHTML = `<div class="prism-error">Could not load prompt cards. Please refresh the page.</div>`;
+      console.error('PRISM:', err);
     });
-    container.appendChild(el);
-  });
 
+  // ── TOGGLE ──
   toggle.addEventListener('click', () => {
     const isOpen = panel.classList.toggle('open');
-    toggle.textContent = isOpen ? 'Collapse ↑' : 'Explore prompts ↓';
+    toggle.textContent = isOpen ? 'Collapse ↑' : 'Explore Prompts ↓';
   });
 </script>
-
 </body>
 </html>
