@@ -1,209 +1,8 @@
-
-<style>
-#prism-widget {
-  font-family: 'Poppins', sans-serif;
-  background: #ffffff;
-  border: 1px solid #d9d5ce;
-  border-left: 4px solid #A41623;
-  color: #1a1816;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 0 0 1.5rem 0;
-}
-#prism-widget * { box-sizing: border-box; margin: 0; padding: 0; }
-#prism-widget .pw-header {
-  padding: 1rem 1.25rem 0.75rem;
-  border-bottom: 1px solid #f0ede8;
-}
-#prism-widget .pw-eyebrow {
-  font-family: 'Courier New', monospace;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #A41623;
-  margin-bottom: 0.2rem;
-  display: block;
-}
-#prism-widget .pw-acronym {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.06em;
-  color: #7a7670;
-  margin-bottom: 0.4rem;
-  display: block;
-}
-#prism-widget .pw-title {
-  font-family: Georgia, serif;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #1a1816;
-  line-height: 1.3;
-  display: block;
-}
-#prism-widget .pw-intro {
-  padding: 0.9rem 1.25rem 0.85rem;
-  font-family: Georgia, serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #3d3a36;
-  line-height: 1.75;
-}
-#prism-widget .pw-intro strong {
-  font-weight: 700;
-  color: #1a1816;
-}
-#prism-widget .pw-actions {
-  padding: 0 1.25rem 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-#prism-widget .pw-hint {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: #7a7670;
-  flex: 1;
-  min-width: 120px;
-}
-#prism-widget .pw-pdf-btn {
-  font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #A41623;
-  background: #ffffff;
-  border: 1px solid #A41623;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  white-space: nowrap;
-  transition: all 0.2s;
-}
-#prism-widget .pw-pdf-btn:hover {
-  background: #A41623;
-  color: #ffffff;
-}
-#prism-widget .pw-toggle-btn {
-  font-family: 'Courier New', monospace;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ffffff;
-  background: #A41623;
-  border: 1px solid #A41623;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-#prism-widget .pw-toggle-btn:hover { background: #7a0f19; border-color: #7a0f19; }
-#prism-widget .pw-cards-panel {
-  display: none;
-  border-top: 1px solid #f0ede8;
-  padding: 1rem 1.25rem 1.25rem;
-  background: #f4f1ec;
-}
-#prism-widget .pw-cards-panel.open { display: block; }
-#prism-widget .pw-cards-label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #7a7670;
-  margin-bottom: 0.75rem;
-  display: block;
-}
-#prism-widget .pw-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-}
-@media (max-width: 540px) {
-  #prism-widget .pw-cards-grid { grid-template-columns: 1fr; }
-  #prism-widget .pw-actions { flex-direction: column; align-items: flex-start; }
-}
-#prism-widget .pw-card {
-  background: #ffffff;
-  border: 1px solid #d9d5ce;
-  padding: 0.85rem 1rem;
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  color: inherit;
-  transition: border-color 0.15s, background 0.15s;
-}
-#prism-widget .pw-card:hover {
-  border-color: #A41623;
-  background: #fdf8f7;
-}
-#prism-widget .pw-card-tag {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #A41623;
-  margin-bottom: 0.4rem;
-  display: block;
-}
-#prism-widget .pw-card-prompt {
-  font-family: Georgia, serif;
-  font-size: 0.78rem;
-  color: #3d3a36;
-  line-height: 1.55;
-  display: block;
-}
-#prism-widget .pw-card-hint {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: #7a7670;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-#prism-widget .pw-card-hint::before { content: '↗'; color: #A41623; }
-#prism-widget .pw-card.copied { border-color: #A41623; background: #fdf8f7; }
-#prism-widget .pw-card.copied .pw-card-hint { color: #A41623; font-weight: 700; }
-#prism-widget .pw-cards-footer {
-  margin-top: 0.9rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #d9d5ce;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-#prism-widget .pw-footer-note {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: #7a7670;
-  font-style: italic;
-}
-#prism-widget .pw-footer-cta {
-  font-family: 'Courier New', monospace;
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #A41623;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(164,22,35,0.3);
-  padding-bottom: 1px;
-}
-#prism-widget .pw-footer-cta:hover { border-color: #A41623; }
-</style>
+<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
 
 <div id="prism-widget">
   <div class="pw-header">
@@ -233,15 +32,15 @@
 (function() {
   var cards = [{"id": "card-01", "audience": "New to stablecoins", "tag": "If you're new to stablecoins", "prompt": "I'm new to crypto and just read about Visa settling transactions in USDC stablecoins. Can you explain what a stablecoin actually is, why Visa would use one instead of regular dollars, and what this means for someone who doesn't currently hold any cryptocurrency?"}, {"id": "card-02", "audience": "Market-aware reader", "tag": "If you follow markets", "prompt": "Visa's stablecoin settlement volume hit $7B annualized in April 2026, doubling in one quarter across 9 blockchains. Put this in context for me: how does this compare to traditional payment settlement volumes, what does the pace of scaling signal, and what are the second-order effects I should be watching?"}, {"id": "card-03", "audience": "Evaluating Tangem Pay", "tag": "If you're evaluating Tangem Pay", "prompt": "I'm considering using Tangem Pay to spend USDC from cold storage via a virtual Visa card. Walk me through the actual security architecture: what happens at the point of transaction, where could a vulnerability exist, and what questions should I be asking before I load funds onto the spending card?"}, {"id": "card-04", "audience": "Small business owner", "tag": "If you run a small business", "prompt": "I own a small business and I'm exploring whether accepting USDC stablecoin payments makes sense. Given the Visa settlement infrastructure that's now live, what are the practical steps to get started, what are the tax implications I need to understand, and what risks should I stress-test before committing?"}, {"id": "card-05", "audience": "Regulation tracker", "tag": "If you're tracking regulation", "prompt": "The GENIUS Act passed in July 2025 and appears to have enabled Visa's U.S. stablecoin rollout. Break down what the GENIUS Act actually established, what it left unresolved, and what regulatory developments in the next 12 months would most change the stablecoin landscape for individual holders and businesses?"}, {"id": "card-06", "audience": "Sideline observer ready to act", "tag": "If you're deciding your path", "prompt": "I've been watching the crypto and stablecoin space from the sidelines. I understand the infrastructure is maturing but I haven't acted yet. Given my specific situation — [describe your situation here] — help me think through whether now is the right time to enter, what my actual first step should be, and what I need to have in place before I do."}];
 
-  var grid = document.getElementById('pw-cards-grid');
+  var grid   = document.getElementById('pw-cards-grid');
   var toggle = document.getElementById('pw-toggle-btn');
-  var panel = document.getElementById('pw-cards-panel');
+  var panel  = document.getElementById('pw-cards-panel');
 
   cards.forEach(function(card) {
     var btn = document.createElement('button');
     btn.className = 'pw-card';
     btn.innerHTML =
-      '<span class="pw-card-tag">' + card.tag + '</span>' +
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
       '<span class="pw-card-prompt">' + card.prompt + '</span>' +
       '<span class="pw-card-hint">Copy prompt</span>';
 
