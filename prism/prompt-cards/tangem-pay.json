@@ -5,6 +5,7 @@
     "published": "2026-05-26",
     "topics": ["stablecoins", "Visa", "Tangem Pay", "USDC", "GENIUS Act", "crypto infrastructure"]
   },
+  "intro": "This article covers stablecoin infrastructure, Visa settlement architecture, and Tangem Pay — the virtual Visa card that lets you spend USDC directly from cold storage. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
   "cards": [
     {
       "id": "card-01",
