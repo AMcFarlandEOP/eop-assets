@@ -57,11 +57,18 @@ def generate_prompt_cards(post_content, post_title):
     system_prompt = """You are an expert content strategist for EOP Media, a thought leadership 
 platform serving founders and creators in the Web3, AI, and emerging technology space.
 
-Your job is to read a blog post and generate exactly 6 PRISM prompt cards. Each card gives 
-a specific reader segment a prompt they can copy into their AI (Claude, ChatGPT, Perplexity) 
-to make the article personally actionable.
+Your job is to read a blog post and generate two things:
+1. A widget intro — 2 sentences describing what the article covers and how to use the prompts
+2. Exactly 6 PRISM prompt cards for different reader segments
 
-Rules:
+Widget intro rules:
+- 2 sentences maximum
+- Sentence 1: what specific topics this article covers (name them)
+- Sentence 2: "The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context."
+- Do NOT include the Agency Collective line — that is added automatically
+- Write in second person, present tense
+
+Prompt card rules:
 - Identify the 6 most distinct audience segments this post speaks to
 - Each prompt must be 2-4 sentences, specific to this article's content
 - Prompts should be written in first person from the reader's perspective
@@ -70,6 +77,7 @@ Rules:
 
 Return this exact JSON structure:
 {
+  "intro": "2-sentence widget intro here.",
   "cards": [
     {
       "id": "card-01",
@@ -102,20 +110,21 @@ CONTENT:
 
     try:
         cards_data = json.loads(response_text)
-        return cards_data["cards"]
+        return cards_data.get("intro", ""), cards_data["cards"]
     except json.JSONDecodeError as e:
         print(f"ERROR: Could not parse API response as JSON: {e}")
         print(f"Raw response:\n{response_text}")
         sys.exit(1)
 
 
-def save_prompt_cards(cards, post_slug, output_dir):
-    """Save generated prompt cards to JSON file for review."""
+def save_prompt_cards(intro, cards, post_slug, output_dir):
+    """Save generated prompt cards and intro to JSON file for review."""
     output_path = Path(output_dir) / f"{post_slug}.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output = {
         "post": {"slug": post_slug, "generated": datetime.now().strftime("%Y-%m-%d")},
+        "intro": intro,
         "cards": cards
     }
 
@@ -125,17 +134,21 @@ def save_prompt_cards(cards, post_slug, output_dir):
     return output_path
 
 
-def print_cards_for_review(cards):
-    """Print prompt cards to terminal for review."""
+def print_cards_for_review(intro, cards):
+    """Print intro and prompt cards to terminal for review."""
     print("\n" + "="*60)
-    print("PRISM PROMPT CARDS — REVIEW BEFORE GENERATING PDF")
+    print("PRISM WIDGET INTRO — REVIEW BEFORE GENERATING PDF")
+    print("="*60)
+    print(f"\n{intro}\n")
+    print("="*60)
+    print("PRISM PROMPT CARDS")
     print("="*60)
     for i, card in enumerate(cards, 1):
         print(f"\n[{i}] {card['tag']}")
         print(f"    Audience: {card['audience']}")
         print(f"    Prompt: {card['prompt'][:120]}...")
     print("\n" + "="*60)
-    print("Cards saved to prism/prompt-cards/")
+    print("Intro and cards saved to prism/prompt-cards/")
     print("Review them, edit if needed, then run:")
     print("  python generate-pdf.py --post [your-post.md]")
     print("="*60 + "\n")
@@ -504,6 +517,63 @@ def generate_pdf(post_path, cards, output_dir):
     return output_path
 
 
+def generate_embed_code(post_path):
+    """Generate complete Elementor embed code with cards inlined."""
+    slug = extract_post_meta(post_path)
+    cards_path = Path("prism/prompt-cards") / f"{slug}.json"
+
+    if not cards_path.exists():
+        print(f"ERROR: No prompt cards found at {cards_path}")
+        print("Run Stage 1 first: python generate-pdf.py --post [post] --prompts-only")
+        sys.exit(1)
+
+    with open(cards_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    intro = data.get("intro", "")
+    cards = data.get("cards", [])
+    base_url = "https://amcfarlandeop.github.io/eop-assets"
+    pdf_url = f"{base_url}/prism/pdfs/{slug}.pdf"
+    widget_url = f"{base_url}/prism/widget/prism-widget.html"
+
+    cards_json = json.dumps(cards, indent=4)
+    # indent for embedding inside script tag
+    cards_json_indented = "\n".join("    " + line for line in cards_json.splitlines())
+
+    embed = f"""<script>
+  window.PRISM_CONFIG = {{
+    intro: "{intro}",
+    pdf_url: "{pdf_url}",
+    cards: {cards_json_indented}
+  }};
+</script>
+
+<iframe id="prism-frame"
+  src="{widget_url}"
+  width="100%" frameborder="0" scrolling="no"
+  style="width:100%;border:none;display:block;"></iframe>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.min.js"></script>
+<script>
+  iFrameResize({{ log: false, checkOrigin: false }}, '#prism-frame');
+</script>"""
+
+    print("\n" + "="*60)
+    print(f"ELEMENTOR EMBED CODE — {slug}")
+    print("="*60)
+    print("Copy everything between the lines below:")
+    print("-"*60)
+    print(embed)
+    print("-"*60 + "\n")
+
+    # Also save to a file for easy copying
+    output_path = Path("prism/prompt-cards") / f"{slug}-embed.html"
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write(embed)
+    print(f"✓ Embed code also saved to: {output_path}\n")
+
+
+
 # ── MAIN ───────────────────────────────────────────────────────────────────────
 
 def main():
@@ -511,9 +581,17 @@ def main():
     parser.add_argument('--post', required=True, help='Path to markdown post file')
     parser.add_argument('--prompts-only', action='store_true',
                         help='Only generate prompt cards, skip PDF creation')
+    parser.add_argument('--embed', action='store_true',
+                        help='Generate Elementor embed code from approved prompt cards')
     args = parser.parse_args()
 
     post_path = Path(args.post)
+
+    # Handle embed code generation
+    if args.embed:
+        generate_embed_code(post_path)
+        return
+
     if not post_path.exists():
         print(f"ERROR: Post file not found: {post_path}")
         sys.exit(1)
@@ -531,9 +609,9 @@ def main():
 
     if args.prompts_only or not cards_path.exists():
         # Generate prompt cards via API
-        cards = generate_prompt_cards(content, title)
-        saved_path = save_prompt_cards(cards, slug, "prism/prompt-cards")
-        print_cards_for_review(cards)
+        intro, cards = generate_prompt_cards(content, title)
+        saved_path = save_prompt_cards(intro, cards, slug, "prism/prompt-cards")
+        print_cards_for_review(intro, cards)
 
         if args.prompts_only:
             print(f"✓ Prompt cards saved to: {saved_path}")
@@ -545,6 +623,7 @@ def main():
         with open(cards_path, 'r', encoding='utf-8') as f:
             cards_data = json.load(f)
         cards = cards_data["cards"]
+        # intro available as cards_data.get("intro", "") if needed
 
     # Generate PDF
     print(f"\n→ Generating PDF for: {title}")

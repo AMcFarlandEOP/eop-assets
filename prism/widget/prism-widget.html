@@ -311,49 +311,56 @@
     pdfBtn.style.display = 'inline-block';
   }
 
-  // ── LOAD PROMPT CARDS ──
+  // ── RENDER PROMPT CARDS ──
+  // Cards are passed directly in PRISM_CONFIG.cards — no fetch needed.
   const toggle = document.getElementById('prism-toggle');
   const panel = document.getElementById('prism-panel');
   const container = document.getElementById('prism-cards-container');
   const hint = document.getElementById('prism-hint');
 
-  fetch(config.cards_url)
-    .then(r => {
-      if (!r.ok) throw new Error('Could not load prompt cards');
-      return r.json();
-    })
-    .then(data => {
-      const cards = data.cards;
-      hint.textContent = `${cards.length} prompts built for this article`;
-      toggle.style.display = 'inline-block';
-      container.innerHTML = '';
+  function renderCards(cards) {
+    hint.textContent = `${cards.length} prompts built for this article`;
+    toggle.style.display = 'inline-block';
+    container.innerHTML = '';
 
-      cards.forEach(card => {
-        const el = document.createElement('button');
-        el.className = 'prism-card';
-        el.innerHTML = `
-          <div class="card-tag">${card.tag}</div>
-          <div class="card-prompt">${card.prompt}</div>
-          <div class="card-copy-hint">Copy prompt</div>
-        `;
-        el.addEventListener('click', () => {
-          navigator.clipboard.writeText(card.prompt).then(() => {
-            el.classList.add('copied');
-            el.querySelector('.card-copy-hint').textContent = 'Copied to clipboard';
-            setTimeout(() => {
-              el.classList.remove('copied');
-              el.querySelector('.card-copy-hint').textContent = 'Copy prompt';
-            }, 2500);
-          });
+    cards.forEach(card => {
+      const el = document.createElement('button');
+      el.className = 'prism-card';
+      el.innerHTML = `
+        <div class="card-tag">${card.tag}</div>
+        <div class="card-prompt">${card.prompt}</div>
+        <div class="card-copy-hint">Copy prompt</div>
+      `;
+      el.addEventListener('click', () => {
+        navigator.clipboard.writeText(card.prompt).then(() => {
+          el.classList.add('copied');
+          el.querySelector('.card-copy-hint').textContent = 'Copied to clipboard';
+          setTimeout(() => {
+            el.classList.remove('copied');
+            el.querySelector('.card-copy-hint').textContent = 'Copy prompt';
+          }, 2500);
         });
-        container.appendChild(el);
       });
-    })
-    .catch(err => {
-      hint.textContent = 'Prompts unavailable';
-      container.innerHTML = `<div class="prism-error">Could not load prompt cards. Please refresh the page.</div>`;
-      console.error('PRISM:', err);
+      container.appendChild(el);
     });
+  }
+
+  if (config.cards && config.cards.length > 0) {
+    // Cards passed directly in config — preferred method
+    renderCards(config.cards);
+  } else if (config.cards_url) {
+    // Fallback: fetch from URL (may fail in iframe due to CORS)
+    fetch(config.cards_url)
+      .then(r => { if (!r.ok) throw new Error('Could not load'); return r.json(); })
+      .then(data => renderCards(data.cards))
+      .catch(() => {
+        hint.textContent = 'Prompts unavailable';
+        container.innerHTML = '<div class="prism-error">Could not load prompt cards. Please refresh the page.</div>';
+      });
+  } else {
+    hint.textContent = 'No prompts configured';
+    container.innerHTML = '<div class="prism-error">No prompt cards configured for this post.</div>';
+  }
 
   // ── TOGGLE ──
   toggle.addEventListener('click', () => {
