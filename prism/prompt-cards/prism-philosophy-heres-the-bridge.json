@@ -1,0 +1,44 @@
+{
+  "post": {
+    "slug": "prism-philosophy-heres-the-bridge",
+    "generated": "2026-05-31"
+  },
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Thought leaders and content creators worried about AI erasing their voice",
+      "tag": "If you are a thought leader watching AI synthesis flatten your work",
+      "prompt": "I'm a thought leader concerned that AI agents are synthesizing my content in ways that strip out my unique voice and interpretation. Based on the PRISM framework described in this article, help me audit one piece of my existing content to identify where I'm producing generic signal versus irreducible insight. What specific changes would make my perspective harder for an AI to synthesize away and more likely to be cited as the authoritative source?"
+    },
+    {
+      "id": "card-02",
+      "audience": "Founders at pre-revenue or early-stage who consume thought leadership but struggle to apply it",
+      "tag": "If you are an early-stage founder who reads widely but rarely acts on what you read",
+      "prompt": "I'm a pre-revenue founder who regularly reads thought leadership content but struggles to translate big ideas into actions specific to my stage. This article describes a PRISM methodology that uses prompt cards to help readers filter content through their own context. Help me apply the core argument of this post — that meaning is personal and insight beats signal — to my current situation. What should I actually do differently in how I build credibility and communicate my ideas right now?"
+    },
+    {
+      "id": "card-03",
+      "audience": "Agency owners and content strategists still optimizing for traditional SEO",
+      "tag": "If you are an agency owner or strategist still optimizing for search rankings",
+      "prompt": "I run a content or marketing agency and most of my current strategy is built around SEO — rankings, keywords, backlinks, page authority. This article argues that Answer Engine Optimization is fundamentally different and that generic content gets synthesized away rather than cited. Help me map out what a concrete transition from an SEO-first content strategy to an AEO-first strategy would look like for my agency and the clients I serve. What do I need to stop doing, start doing, and measure differently?"
+    },
+    {
+      "id": "card-04",
+      "audience": "Web3 and decentralized community builders thinking about audience ownership",
+      "tag": "If you are a Web3 founder or community builder rethinking what audience ownership means",
+      "prompt": "I'm building a community or token-gated ecosystem and I'm trying to understand the difference between manufactured engagement and the kind of authentic relationship this article calls 'economic infrastructure.' The post argues that real community shows up as a detectable signal even to AI agents. Help me evaluate my current community model against this framework — am I building stakeholders or just subscribers? What would it look like to restructure my community so that the depth of engagement becomes a genuine signal of authority?"
+    },
+    {
+      "id": "card-05",
+      "audience": "AI-native creators and builders experimenting with human-AI collaboration in content",
+      "tag": "If you are an AI-native creator exploring how humans and machines co-create meaning",
+      "prompt": "I work at the intersection of AI and content creation and I'm interested in the PRISM framework's claim that it enables collaboration between author and reader rather than a machine monologue. The article distinguishes between general-purpose AI synthesis — which averages across thousands of sources — and a PRISM-style synthesis where one expert's voice is the architecture. Help me think through what it would mean to build a content system where my specific intellectual framework is the foundation rather than one input among many. What are the practical design principles I should follow?"
+    },
+    {
+      "id": "card-06",
+      "audience": "Any reader who wants to apply this framework to their own specific context",
+      "tag": "If you want to connect this directly to your own situation",
+      "prompt": "I just read an article about PRISM — a methodology built around the gap between information and personal meaning, and the shift from SEO to Answer Engine Optimization. I want to think through what this means for me specifically. Here's my context: [describe your role, what you're building, your current content or thought leadership challenges, and the biggest question this article raised for you]. Based on what I've shared, help me identify where the PRISM framework is most relevant to my situation and what one concrete action I could take this week to move from producing volume to building genuine, citeable insight."
+    }
+  ]
+}

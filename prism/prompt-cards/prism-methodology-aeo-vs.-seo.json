@@ -1,0 +1,44 @@
+{
+  "post": {
+    "slug": "prism-methodology-aeo-vs.-seo",
+    "generated": "2026-05-31"
+  },
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Marketing directors defending content ROI to skeptical CFOs",
+      "tag": "If you are a marketing director watching organic traffic decline",
+      "prompt": "I'm a marketing director whose organic traffic has been declining despite consistent content investment. I just read an article arguing that the shift from SEO to AEO (Answer Engine Optimization) means the metrics I've been reporting — rankings, impressions, traffic volume — no longer reflect whether our content is actually working. Help me build a clear internal argument for why our content strategy needs to shift from keyword-optimized volume to citable, authoritative depth. What questions should I be asking my agency, and what does a modern content audit focused on 'citability' actually look like?"
+    },
+    {
+      "id": "card-02",
+      "audience": "Agency leaders and principals evaluating their service model",
+      "tag": "If you are an agency leader still billing for content production",
+      "prompt": "I run a content or SEO agency and I just read a pointed critique arguing that most agencies responded to the rise of AI search by adding 'AEO' as a line item rather than rebuilding their methodology. The post distinguishes between agencies that built genuine AEO practices in 2023 versus those that relabeled existing services in 2025. Help me honestly audit my current service model: am I selling a real methodology or a renamed deliverable? What would a genuine AEO practice look like structurally — in terms of deliverables, measurement, and client conversations — compared to what I'm offering today?"
+    },
+    {
+      "id": "card-03",
+      "audience": "Founders and early-stage brand builders investing in content for the first time",
+      "tag": "If you are a founder building a content strategy from scratch",
+      "prompt": "I'm a founder about to invest in content marketing for my brand, and I just read an article arguing that the era of ranking-based SEO is ending — replaced by AI-powered answer engines that synthesize authoritative sources rather than return ranked lists. I want to build a content strategy optimized for this new environment from the start, rather than inheriting a volume-based approach I'll have to unlearn. Based on the AEO framework described — where content needs a unique position, demonstrated expertise, and irreducible perspective — what should my first 90 days of content strategy actually look like?"
+    },
+    {
+      "id": "card-04",
+      "audience": "Content strategists and writers trying to adapt their craft",
+      "tag": "If you are a content strategist or writer navigating the shift to AI search",
+      "prompt": "I'm a content strategist or writer trying to understand what 'citability' actually means in practice now that AI answer engines are synthesizing content rather than ranking it. I read an article that defines the new standard as: does this content carry a position that can't be assembled from other sources? Does the author have a vantage point earned through expertise and lived experience? Help me translate those principles into a concrete writing framework. What does a piece of content optimized for AI synthesis look like structurally, and how is it different from a piece optimized for traditional search ranking?"
+    },
+    {
+      "id": "card-05",
+      "audience": "B2B SaaS marketers with existing content libraries at risk of obsolescence",
+      "tag": "If you are a B2B marketer with years of existing content now losing visibility",
+      "prompt": "I work in B2B SaaS marketing and my company has built a substantial content library over several years — blog posts, guides, case studies — that is now losing organic visibility despite no apparent quality drop. I just read an article arguing this is structural: the measurement system changed, not the content, and volume-based libraries are becoming invisible to AI answer engines that reward depth and authority over quantity. Help me triage my existing content library through an AEO lens. How do I identify which pieces have real citability potential, which should be consolidated or retired, and what a realistic retrofit strategy looks like versus building new cornerstone content?"
+    },
+    {
+      "id": "card-06",
+      "audience": "Any reader who wants to apply the AEO framework to their specific situation",
+      "tag": "If your situation doesn't fit neatly into one of the above",
+      "prompt": "I just read an article about the shift from SEO to AEO and how most of the content industry failed to adapt despite clear early signals. I want to understand how this shift applies specifically to my situation. Here's my context: [describe your role, your organization's current content approach, what you're trying to achieve, and the specific challenge or decision in front of you]. Based on the framework in the article — citability over volume, authentic authority over keyword density, methodology over line items — what should I be thinking about and doing differently?"
+    }
+  ]
+}
