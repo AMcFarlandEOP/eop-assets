@@ -1,0 +1,45 @@
+{
+  "post": {
+    "slug": "agency-collective-proving-ground",
+    "generated": "2026-06-02"
+  },
+  "intro": "This article covers the Agency Collective's structure, TACT token membership, PRISM methodology, token-gated community design, and how founders can build and protect emerging technology concepts before releasing them publicly. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Founders evaluating whether a token-gated community fits their business model",
+      "tag": "If you are a founder exploring token-gated access",
+      "prompt": "I am a founder considering whether a token-gated community makes sense for the audience I have already built. Help me think through the difference between using a token as proof of standing versus using it as a paywall. What questions should I answer before deciding whether this model fits my specific business and audience?"
+    },
+    {
+      "id": "card-02",
+      "audience": "Agency owners and consultants trying to productize their expertise",
+      "tag": "If you are an agency owner or consultant",
+      "prompt": "I run an agency and I want to turn my expertise into something that scales beyond client work. This article describes a methodology called PRISM — personalized intelligence built around a specific point of view — as one example of what that looks like. Help me think through what a named, deployable methodology built on my expertise might look like, and what the first steps to developing one would be."
+    },
+    {
+      "id": "card-03",
+      "audience": "Creators and educators considering Web3 monetization tools",
+      "tag": "If you are a creator or educator building an audience",
+      "prompt": "I have spent years building an audience and I want to create a space where my most committed members access my expertise directly, with ownership verified on-chain rather than through a password. Help me map out what a token-gated community for my audience could look like — what the token would represent, what members would access, and how the value compounds over time."
+    },
+    {
+      "id": "card-04",
+      "audience": "Builders overwhelmed by simultaneous shifts in AI, blockchain, and emerging tech",
+      "tag": "If you are a builder trying to keep pace with AI and blockchain simultaneously",
+      "prompt": "I understand that AI, blockchain, and quantum computing are arriving together and accelerating each other — but I am struggling to move from staying current to actually building something. Help me identify where my specific expertise intersects with these technology shifts, and what a concrete first project would look like that is mine rather than an implementation of someone else's framework."
+    },
+    {
+      "id": "card-05",
+      "audience": "Early-stage concept holders looking for the right environment to develop an idea",
+      "tag": "If you have an idea you are not ready to share publicly",
+      "prompt": "I have a concept that is real enough to pressure-test but not ready for public exposure. The article describes the risk of developing ideas in public — encountering skepticism before you have answers, and copying before you have established provenance. Help me think through what a protected development process for my concept would look like, including how to identify who should have access to it and at what stage."
+    },
+    {
+      "id": "card-06",
+      "audience": "Any reader who wants to apply this article's framework to their own situation",
+      "tag": "If your situation does not fit neatly into any of the above",
+      "prompt": "I just read an article about building in emerging technology, protecting ideas before they are ready for public release, and finding the right environment to develop a concept under real conditions. Here is where I am right now: [describe your current stage, what you are building, and what is holding you back]. Based on what I have shared, help me identify the most important question I should be asking and what a useful next step looks like."
+    }
+  ]
+}
