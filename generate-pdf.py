@@ -517,8 +517,91 @@ def generate_pdf(post_path, cards, output_dir):
     return output_path
 
 
+# ── INLINE WIDGET TEMPLATE ──
+WIDGET_TEMPLATE = """<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
+
+<div id="prism-widget">
+  <div class="pw-header">
+    <span class="pw-eyebrow">PRISM by EOP Media</span>
+    <span class="pw-acronym">Personalized Relevant Intelligence Synthesized for Meaning</span>
+    <span class="pw-title">Engage Your AI to Go Deeper on This Article</span>
+  </div>
+  <div class="pw-intro">
+    {intro} <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  </div>
+  <div class="pw-actions">
+    <span class="pw-hint">{card_count} prompts built for this article</span>
+    <a class="pw-pdf-btn" href="{pdf_url}" target="_blank">&#8595; Download PDF Companion</a>
+    <button class="pw-toggle-btn" id="pw-toggle-btn">Explore Prompts &#8595;</button>
+  </div>
+  <div class="pw-cards-panel" id="pw-cards-panel">
+    <span class="pw-cards-label">Choose your starting point — click any card to copy</span>
+    <div class="pw-cards-grid" id="pw-cards-grid"></div>
+    <div class="pw-cards-footer">
+      <span class="pw-footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="pw-footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">Get your personalized profile &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {{
+  var cards = {cards_json};
+
+  var grid   = document.getElementById('pw-cards-grid');
+  var toggle = document.getElementById('pw-toggle-btn');
+  var panel  = document.getElementById('pw-cards-panel');
+
+  cards.forEach(function(card) {{
+    var btn = document.createElement('button');
+    btn.className = 'pw-card';
+    btn.innerHTML =
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
+      '<span class="pw-card-prompt">' + card.prompt + '</span>' +
+      '<span class="pw-card-hint">Copy prompt</span>';
+
+    btn.addEventListener('click', function() {{
+      var hint = btn.querySelector('.pw-card-hint');
+      if (navigator.clipboard) {{
+        navigator.clipboard.writeText(card.prompt).then(function() {{
+          btn.classList.add('copied');
+          hint.textContent = 'Copied to clipboard';
+          setTimeout(function() {{
+            btn.classList.remove('copied');
+            hint.textContent = 'Copy prompt';
+          }}, 2500);
+        }});
+      }} else {{
+        var ta = document.createElement('textarea');
+        ta.value = card.prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        hint.textContent = 'Copied to clipboard';
+        setTimeout(function() {{
+          btn.classList.remove('copied');
+          hint.textContent = 'Copy prompt';
+        }}, 2500);
+      }}
+    }});
+    grid.appendChild(btn);
+  }});
+
+  toggle.addEventListener('click', function() {{
+    var isOpen = panel.classList.toggle('open');
+    toggle.innerHTML = isOpen ? 'Collapse &#8593;' : 'Explore Prompts &#8595;';
+  }});
+}})();
+</script>""" 
+
 def generate_embed_code(post_path):
-    """Generate complete Elementor embed code with cards inlined."""
+    """Generate self-contained inline Gutenberg HTML block."""
     slug = extract_post_meta(post_path)
     cards_path = Path("prism/prompt-cards") / f"{slug}.json"
 
@@ -534,43 +617,26 @@ def generate_embed_code(post_path):
     cards = data.get("cards", [])
     base_url = "https://amcfarlandeop.github.io/eop-assets"
     pdf_url = f"{base_url}/prism/pdfs/{slug}.pdf"
-    widget_url = f"{base_url}/prism/widget/prism-widget.html"
 
-    cards_json = json.dumps(cards, indent=4)
-    # indent for embedding inside script tag
-    cards_json_indented = "\n".join("    " + line for line in cards_json.splitlines())
+    cards_json = json.dumps(cards, ensure_ascii=False)
 
-    embed = f"""<script>
-  window.PRISM_CONFIG = {{
-    intro: "{intro}",
-    pdf_url: "{pdf_url}",
-    cards: {cards_json_indented}
-  }};
-</script>
+    embed = WIDGET_TEMPLATE.format(
+        intro=intro,
+        card_count=len(cards),
+        pdf_url=pdf_url,
+        cards_json=cards_json
+    )
 
-<iframe id="prism-frame"
-  src="{widget_url}"
-  width="100%" frameborder="0" scrolling="no"
-  style="width:100%;border:none;display:block;"></iframe>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.min.js"></script>
-<script>
-  iFrameResize({{ log: false, checkOrigin: false }}, '#prism-frame');
-</script>"""
-
-    print("\n" + "="*60)
-    print(f"ELEMENTOR EMBED CODE — {slug}")
-    print("="*60)
-    print("Copy everything between the lines below:")
-    print("-"*60)
-    print(embed)
-    print("-"*60 + "\n")
-
-    # Also save to a file for easy copying
     output_path = Path("prism/prompt-cards") / f"{slug}-embed.html"
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(embed)
-    print(f"✓ Embed code also saved to: {output_path}\n")
+
+    print("\n" + "="*60)
+    print(f"GUTENBERG EMBED CODE — {slug}")
+    print("="*60)
+    print(f"\n✓ Embed code saved to: {output_path}")
+    print("  Open it in VS Code, select all, and paste into your Gutenberg HTML block.")
+    print("\n" + "="*60 + "\n")
 
 
 
