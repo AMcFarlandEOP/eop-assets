@@ -3,43 +3,43 @@
     "slug": "agency-collective-proving-ground",
     "generated": "2026-06-02"
   },
-  "intro": "This article covers the Agency Collective's structure, TACT token membership, PRISM methodology, token-gated community design, and how founders can build and protect emerging technology concepts before releasing them publicly. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
+  "intro": "This article covers The Agency Collective's token-gated membership model, PRISM methodology, blockchain-based standing via the TACT token, and four commitment levels designed for founders and creators building in AI, Web3, and emerging technology. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
   "cards": [
     {
       "id": "card-01",
-      "audience": "Founders evaluating whether a token-gated community fits their business model",
-      "tag": "If you are a founder exploring token-gated access",
-      "prompt": "I am a founder considering whether a token-gated community makes sense for the audience I have already built. Help me think through the difference between using a token as proof of standing versus using it as a paywall. What questions should I answer before deciding whether this model fits my specific business and audience?"
+      "audience": "Founders evaluating whether to join a structured collective vs. building alone",
+      "tag": "If you are a founder deciding where to develop your next idea",
+      "prompt": "I am a founder weighing whether to develop my next concept inside a structured collective or continue building independently. The Agency Collective article describes a 'proving ground' model where ideas are pressure-tested in a protected environment before public release. Help me think through what I should look for in any environment where I bring an early-stage idea — what conditions actually help an idea develop versus what conditions expose it before it is ready."
     },
     {
       "id": "card-02",
-      "audience": "Agency owners and consultants trying to productize their expertise",
-      "tag": "If you are an agency owner or consultant",
-      "prompt": "I run an agency and I want to turn my expertise into something that scales beyond client work. This article describes a methodology called PRISM — personalized intelligence built around a specific point of view — as one example of what that looks like. Help me think through what a named, deployable methodology built on my expertise might look like, and what the first steps to developing one would be."
+      "audience": "Agency owners and consultants exploring how to productize their expertise",
+      "tag": "If you are an agency owner looking to turn your expertise into scalable IP",
+      "prompt": "I run an agency and I have deep expertise in my category, but most of my revenue still depends on trading time for money. The Agency Collective article describes building things like token-gated communities, knowledge products that deploy intelligence at scale, and named methodologies. Help me think through what it would look like to turn my specific expertise into a digital asset or scalable product — what questions should I be asking before I choose a format or a platform?"
     },
     {
       "id": "card-03",
-      "audience": "Creators and educators considering Web3 monetization tools",
-      "tag": "If you are a creator or educator building an audience",
-      "prompt": "I have spent years building an audience and I want to create a space where my most committed members access my expertise directly, with ownership verified on-chain rather than through a password. Help me map out what a token-gated community for my audience could look like — what the token would represent, what members would access, and how the value compounds over time."
+      "audience": "Creators and community builders considering token-gated access models",
+      "tag": "If you are a creator exploring token-gating as an alternative to subscription access",
+      "prompt": "I have an existing audience and I am exploring whether a token-gated community model makes more sense than a traditional subscription or password-protected membership. The Agency Collective article draws a sharp distinction between a token as proof of standing versus a paywall as a receipt for access, and explains how token ownership changes the nature of participation. Help me think through the real differences between these models for my audience — what does token-gating actually change about the relationship between me and my members, and what does it require of them?"
     },
     {
       "id": "card-04",
-      "audience": "Builders overwhelmed by simultaneous shifts in AI, blockchain, and emerging tech",
-      "tag": "If you are a builder trying to keep pace with AI and blockchain simultaneously",
-      "prompt": "I understand that AI, blockchain, and quantum computing are arriving together and accelerating each other — but I am struggling to move from staying current to actually building something. Help me identify where my specific expertise intersects with these technology shifts, and what a concrete first project would look like that is mine rather than an implementation of someone else's framework."
+      "audience": "Builders trying to get current on AI, blockchain, and emerging tech without the noise",
+      "tag": "If you are trying to build with emerging technology but feel behind on too many fronts at once",
+      "prompt": "I am trying to stay current across AI, blockchain, and emerging technology simultaneously, but most of what I read feels like trend-watching rather than actionable strategy. The Agency Collective article argues that the real question is not whether you understand these technologies but whether you are building something with them that reflects your specific expertise and audience. Help me think through how to move from consuming information about these shifts to actually building something with them — what would that transition look like for someone at my stage?"
     },
     {
       "id": "card-05",
-      "audience": "Early-stage concept holders looking for the right environment to develop an idea",
-      "tag": "If you have an idea you are not ready to share publicly",
-      "prompt": "I have a concept that is real enough to pressure-test but not ready for public exposure. The article describes the risk of developing ideas in public — encountering skepticism before you have answers, and copying before you have established provenance. Help me think through what a protected development process for my concept would look like, including how to identify who should have access to it and at what stage."
+      "audience": "Leaders considering cohort-based programs like the Agency Lab for their team",
+      "tag": "If you are evaluating a structured cohort program for yourself or a small team",
+      "prompt": "I am considering a cohort-based program — something like the Agency Lab model described in The Agency Collective article — where a small group works together over sixty days to move a concept from idea to something concrete. I want to understand what makes a cohort format more effective than self-directed learning or one-on-one consulting for this kind of work. Help me think through what I should evaluate in any structured cohort before I commit — what conditions actually produce real output versus just structured conversation?"
     },
     {
       "id": "card-06",
-      "audience": "Any reader who wants to apply this article's framework to their own situation",
+      "audience": "Any reader who wants to apply the article's core ideas to their own specific situation",
       "tag": "If your situation does not fit neatly into any of the above",
-      "prompt": "I just read an article about building in emerging technology, protecting ideas before they are ready for public release, and finding the right environment to develop a concept under real conditions. Here is where I am right now: [describe your current stage, what you are building, and what is holding you back]. Based on what I have shared, help me identify the most important question I should be asking and what a useful next step looks like."
+      "prompt": "I just read The Agency Collective article about building in emerging technology inside a protected, token-gated proving ground. I want to think through how the ideas in it apply to my specific situation. Here is where I am right now: [describe your current role, what you are building or trying to build, and the biggest question this article raised for you]. Help me figure out what the most useful next question is for someone in my position."
     }
   ]
 }
