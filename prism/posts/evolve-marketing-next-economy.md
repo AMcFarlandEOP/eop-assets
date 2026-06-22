@@ -88,3 +88,4 @@ eopmedia.com/uncategorized/eop-media-opens-the-agency-collective-a-token-gated-b
 
 *These two posts are companion pieces. Transform the Marketing Profession addresses the people inside the discipline. This post addresses the discipline itself. Each stands independently.*
 eopmedia.com/big-ideas/transform-the-marketing-profession/
+

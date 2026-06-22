@@ -78,3 +78,4 @@ eopmedia.com/uncategorized/eop-media-opens-the-agency-collective-a-token-gated-b
 
 *These two posts are companion pieces. Evolve Marketing for the Next Economy addresses the discipline itself. This post addresses the people inside it. Each stands independently.*
 eopmedia.com/big-ideas/evolve-marketing-for-the-next-economy/
+
