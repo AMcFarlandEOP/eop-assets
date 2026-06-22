@@ -1,0 +1,81 @@
+<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
+
+<div id="prism-widget">
+  <div class="pw-header">
+    <span class="pw-eyebrow">PRISM by EOP Media</span>
+    <span class="pw-acronym">Personalized Relevant Intelligence Synthesized for Meaning</span>
+    <span class="pw-title">Engage Your AI to Go Deeper on This Article</span>
+  </div>
+  <div class="pw-intro">
+    This article covers the historical evolution of marketing through major economic shifts, the limits of go-to-market frameworks in complex economies, and how AI is forcing a move from transactional to relational models — with PRISM as a working methodology for that transition. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context. <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  </div>
+  <div class="pw-actions">
+    <span class="pw-hint">6 prompts built for this article</span>
+    <a class="pw-pdf-btn" href="https://amcfarlandeop.github.io/eop-assets/prism/pdfs/evolve-marketing-next-economy.pdf" target="_blank">&#8595; Download PDF Companion</a>
+    <button class="pw-toggle-btn" id="pw-toggle-btn">Explore Prompts &#8595;</button>
+  </div>
+  <div class="pw-cards-panel" id="pw-cards-panel">
+    <span class="pw-cards-label">Choose your starting point — click any card to copy</span>
+    <div class="pw-cards-grid" id="pw-cards-grid"></div>
+    <div class="pw-cards-footer">
+      <span class="pw-footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="pw-footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">Get your personalized profile &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var cards = [{"id": "card-01", "audience": "Marketing practitioners questioning whether their current frameworks still fit", "tag": "If you are a marketing professional whose tools feel outdated", "prompt": "This article argues that go-to-market frameworks were designed for geographical markets and predictable channels that no longer exist, and that the discipline has been evolving toward relational, meaning-focused models for years. I work in marketing and I feel the gap between the frameworks I'm expected to use and the landscape I'm actually operating in. Help me think through what a more honest framework for my current work would look like — one that accounts for non-linear relationships, value distribution, and audiences who already have access to all the information."}, {"id": "card-02", "audience": "Founders building go-to-market strategy for a Web3 or AI product", "tag": "If you are a founder launching into a complex, networked economy", "prompt": "This article makes the case that we no longer launch products into markets — we launch them into economies, which are complex systems where value is distributed and buyer behavior is non-linear. I'm building a product in the Web3 or AI space and my current GTM thinking still feels like it was designed for a simpler, more linear world. Help me rethink my launch strategy through the lens of economies rather than markets — what questions should I be asking, and what does relational engagement look like at the early stage?"}, {"id": "card-03", "audience": "Content creators and independent builders navigating AI-driven information abundance", "tag": "If you are a creator trying to stay relevant as AI changes what content is worth", "prompt": "This article argues that when everyone has access to information, the value moves to meaning — and that the marketing function that matters now is the one that helps audiences extract meaning from information they already have, not the one pushing more information out. I create content and I'm trying to figure out what my work is actually worth in a world where AI can synthesize information almost instantly. Help me think through what it looks like to shift from broadcasting information to creating personalized meaning — what does that change about my content, my format, and my relationship with my audience?"}, {"id": "card-04", "audience": "Agency owners and consultants positioning themselves for the next economy", "tag": "If you are an agency owner or consultant defining your value in an AI-restructured market", "prompt": "This article traces how marketing practitioners who noticed major economic shifts early — broadcast, direct response, the internet, social media — shaped what the discipline became, while those who waited had the definition written for them by institutions. I run an agency and I'm trying to define my positioning before the institutions write the next job description without me. Help me think through where strategic value actually lives in an AI-restructured marketing landscape, and how I should be articulating that to clients who are still thinking in terms of content volume and channel coverage."}, {"id": "card-05", "audience": "Executives and marketing leaders inside institutions evaluating AI strategy", "tag": "If you are a marketing leader inside an institution building an AI strategy", "prompt": "This article warns that institutions are currently defining AI's role in marketing through job descriptions that prioritize prompt engineering over strategic insight and frameworks that optimize for content volume over content value — and that this approach misses where the discipline is actually going. I lead marketing inside a larger organization and I'm trying to make the case internally for a more strategic, meaning-focused approach to AI rather than a production-efficiency one. Help me build that argument — what are the risks of the volume-optimization path, and what does a meaning-first AI strategy look like at the organizational level?"}, {"id": "card-06", "audience": "Any reader bringing their own specific context", "tag": "If your situation doesn't fit neatly into any of the above", "prompt": "This article argues that marketing's core work — understanding audiences, creating meaning from information, building relationships between people and what they need — is fundamental to how economies function, and that AI is making the relational model not just possible but necessary. I want to think through what this shift means for my specific situation. Here is my context: [describe your role, what you're building, and the specific challenge you're trying to work through]. Help me apply the ideas in this article to what I'm actually facing."}];
+
+  var grid   = document.getElementById('pw-cards-grid');
+  var toggle = document.getElementById('pw-toggle-btn');
+  var panel  = document.getElementById('pw-cards-panel');
+
+  cards.forEach(function(card) {
+    var btn = document.createElement('button');
+    btn.className = 'pw-card';
+    btn.innerHTML =
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
+      '<span class="pw-card-prompt">' + card.prompt + '</span>' +
+      '<span class="pw-card-hint">Copy prompt</span>';
+
+    btn.addEventListener('click', function() {
+      var hint = btn.querySelector('.pw-card-hint');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(card.prompt).then(function() {
+          btn.classList.add('copied');
+          hint.textContent = 'Copied to clipboard';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            hint.textContent = 'Copy prompt';
+          }, 2500);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = card.prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        hint.textContent = 'Copied to clipboard';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          hint.textContent = 'Copy prompt';
+        }, 2500);
+      }
+    });
+    grid.appendChild(btn);
+  });
+
+  toggle.addEventListener('click', function() {
+    var isOpen = panel.classList.toggle('open');
+    toggle.innerHTML = isOpen ? 'Collapse &#8593;' : 'Explore Prompts &#8595;';
+  });
+})();
+</script>

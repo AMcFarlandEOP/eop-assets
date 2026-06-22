@@ -1,0 +1,45 @@
+{
+  "post": {
+    "slug": "transform-marketing-profession",
+    "generated": "2026-06-22"
+  },
+  "intro": "This article covers the marketing profession's historical pattern of adjusting to institutional demands, what AI is doing to that pattern, and how practitioners can define their own contribution before someone else does. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Marketing professionals feeling undervalued or repositioned by AI",
+      "tag": "If you are a marketer watching your role get redefined around you",
+      "prompt": "This article argues that marketing professionals consistently do the foundational creative work — translating ideas into language, building audiences, identifying shifts — and then have that contribution absorbed into institutional value without recognition. I want to examine where this pattern is showing up in my current role. Help me identify the specific moments in my workflow where I am creating value that is not being attributed to me, and what it would look like to make that contribution visible rather than invisible."
+    },
+    {
+      "id": "card-02",
+      "audience": "Founders building products that include a marketing or content function",
+      "tag": "If you are a founder deciding how marketing fits into your build",
+      "prompt": "The article describes two postures for marketing inside an organization: a support function brought in after the product is defined to communicate what has already been decided, and a strategic function embedded in the work from the beginning. I am building a product and I need to think through which posture I am actually creating — and whether my current structure makes marketing's contribution visible or buries it. Help me map out what early-stage marketing involvement looks like when it is treated as a core competency rather than a communication layer."
+    },
+    {
+      "id": "card-03",
+      "audience": "Ghostwriters and content strategists who create work attributed to others",
+      "tag": "If you are a ghostwriter or content strategist whose work carries someone else's name",
+      "prompt": "The article opens with the image of a ghostwriter whose draft came back unrecognizable, and a mentor who reframed the experience with a single question: where was he when the paper was white? I want to think through what it means to name and protect the value of origination — the work of translating a blank page into a fully realized perspective — when the professional structure I work in routes attribution away from me. Help me think through how I articulate the value of what I do before the draft exists, not just what I deliver."
+    },
+    {
+      "id": "card-04",
+      "audience": "Marketing leaders or CMOs navigating AI adoption inside their organizations",
+      "tag": "If you are a marketing leader being asked to implement AI at scale",
+      "prompt": "The article argues that institutions are currently optimizing AI adoption for efficiency — content at scale, automated personalization, faster production at lower cost — and that what gets optimized away is the capacity to translate between thought and expression in ways specific to a particular audience at a particular moment. I am being asked to lead AI adoption for my team and I want to do it without eroding the core competency the article is describing. Help me think through what AI implementation looks like when it is designed to amplify human marketing judgment rather than replace it."
+    },
+    {
+      "id": "card-05",
+      "audience": "Practitioners building methodologies or frameworks they want to protect and release on their own terms",
+      "tag": "If you are building a methodology or framework and want to release it as yours",
+      "prompt": "The article describes PRISM as a methodology built by a marketing professional before the product was defined — and positions that sequence as the thing that makes the contribution visible rather than absorbed. I am developing my own framework or methodology and I want to think through how to structure and release it in a way that keeps my name and perspective attached to it. Help me think through what it means to build something before the institutional context exists for it, and how to protect that origination as the framework moves into the world."
+    },
+    {
+      "id": "card-06",
+      "audience": "Any reader whose specific situation doesn't fit the cards above",
+      "tag": "If your situation is different from any of the above",
+      "prompt": "The article is about a pattern — the marketing profession adjusting to what institutions demand rather than defining what the discipline should become at each inflection point. My situation is this: [describe your role, what you are building or navigating, and what the AI inflection point looks like from where you sit]. Help me think through where this pattern shows up in my specific context and what asserting rather than adjusting could look like for me."
+    }
+  ]
+}

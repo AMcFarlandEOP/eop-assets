@@ -1,0 +1,45 @@
+{
+  "post": {
+    "slug": "revolutionize-startup-ecosystem",
+    "generated": "2026-06-22"
+  },
+  "intro": "This article covers the structural failures of the startup ecosystem — including the product-market-fit fallacy, go-to-market limitations, and the question of who controls value once a product launches. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Early-stage founders who built a product before finding a market",
+      "tag": "If you are a founder searching for product-market fit",
+      "prompt": "I built a product before fully understanding the market for it, and I'm now trying to find where it fits. This article argues that searching for product-market fit after the build is the wrong order — that marketing should shape the product, not follow it. Help me audit what I actually built: what capability does my product represent, who is the specific person it serves, in what context, and what need was never clearly defined before I started? I want to identify the founding error and figure out what's still fixable."
+    },
+    {
+      "id": "card-02",
+      "audience": "Startup founders who are about to launch or pitch",
+      "tag": "If you are preparing a product launch or investor pitch",
+      "prompt": "I'm preparing to launch a product and I want to pressure-test whether I'm doing it in the right order. This article argues that most launches are actually rescue operations — marketing applied too late to a product already locked in. Before I finalize my go-to-market plan, help me answer these questions honestly: Was the value of my product established before I built it, or after? Am I going to market with a product, or a technology still searching for a need? What would I change if the builder's timeline governed rather than the investor's?"
+    },
+    {
+      "id": "card-03",
+      "audience": "Product marketers and growth strategists inside startups",
+      "tag": "If you are the marketing lead who got brought in after the product was built",
+      "prompt": "I was brought into this product after it was already built, and I'm being asked to find the market for something I had no hand in shaping. This article describes exactly that situation and calls it a rescue operation. Help me think through what's actually possible from this position: What can real marketing do when the product is already locked? Where do I have genuine leverage to reframe positioning versus where am I just managing a structural failure? And what should I be pushing the founding team to do differently before the next build?"
+    },
+    {
+      "id": "card-04",
+      "audience": "Web3 founders and builders thinking about IP protection and ownership",
+      "tag": "If you are building in Web3 and thinking about who controls your product's value",
+      "prompt": "I'm building a product in Web3 and I keep running into the question of who actually controls the value once it's out in the world. This article argues that most founders optimize for speed to market and underinvest in the question of who controls the market once they're in it. Help me think through my own situation: What infrastructure am I dependent on that I don't control? What happens to my product's value if that platform changes its terms, fees, or algorithm? What would it look like to build with ownership in mind from the start rather than as an afterthought?"
+    },
+    {
+      "id": "card-05",
+      "audience": "Accelerator leaders, investors, and ecosystem builders",
+      "tag": "If you run an accelerator, fund, or startup support program",
+      "prompt": "I work inside the startup support ecosystem — as an investor, accelerator operator, or advisor — and this article is arguing that the ecosystem itself has institutionalized the problem it claims to solve. The product-market-fit framework, the GTM model, even the fundraising pressure toward early visibility are all implicated. Help me examine my own program or practice honestly: In what ways am I pushing founders toward the wrong order of operations? What would a build environment actually designed for the founder's timeline look like, and how far is what I offer from that?"
+    },
+    {
+      "id": "card-06",
+      "audience": "Any founder or creator who wants to apply this thinking to their specific situation",
+      "tag": "If your situation doesn't fit the descriptions above",
+      "prompt": "This article argues that the startup ecosystem has a structural problem — that we build technology, call it a product, bring in marketing last, and call the result a launch. I want to apply this thinking to my own situation. Let me describe what I'm building, where I am in the process, and what pressures I'm navigating. Based on that, help me identify which part of the argument applies most directly to me and what the one question I should be sitting with before I take my next step actually is."
+    }
+  ]
+}
