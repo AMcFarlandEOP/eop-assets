@@ -5,40 +5,31 @@
 # Runs: Stage 1 (prompt cards) → Stage 2 (PDF) → --embed
 # Commits all generated files back to the repo automatically
 # ============================================================
-
 name: PRISM — Generate PDF and Embed Code
-
 on:
   push:
     paths:
       - 'prism/posts/**.md'
-
 jobs:
   generate:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
-
     steps:
-
       # 1. Check out the repo
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       # 2. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       # 3. Install dependencies
       - name: Install dependencies
         run: |
           pip install anthropic python-dotenv reportlab mistune
-
       # 4. Find new or modified markdown files in prism/posts/
       - name: Detect changed post files
         id: changed
@@ -47,9 +38,10 @@ jobs:
           CHANGED=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'prism/posts/*.md' 2>/dev/null || \
                     git diff --name-only --diff-filter=AM $(git hash-object -t tree /dev/null) HEAD -- 'prism/posts/*.md' 2>/dev/null || \
                     echo "")
-          echo "files=$CHANGED" >> $GITHUB_OUTPUT
-          echo "Changed files: $CHANGED"
-
+          # Convert newlines to spaces so GitHub Actions can store it as a single-line output
+          CHANGED_ONELINE=$(echo "$CHANGED" | tr '\n' ' ' | xargs)
+          echo "files=$CHANGED_ONELINE" >> $GITHUB_OUTPUT
+          echo "Changed files: $CHANGED_ONELINE"
       # 5. Process each changed post file
       - name: Generate prompt cards, PDF, and embed code
         env:
@@ -57,48 +49,38 @@ jobs:
         run: |
           # Get changed .md files
           CHANGED="${{ steps.changed.outputs.files }}"
-
           if [ -z "$CHANGED" ]; then
             echo "No post files changed. Skipping generation."
             exit 0
           fi
-
           # Process each file
           for POST_FILE in $CHANGED; do
             echo "============================================"
             echo "Processing: $POST_FILE"
             echo "============================================"
-
             # Check file exists
             if [ ! -f "$POST_FILE" ]; then
               echo "File not found: $POST_FILE — skipping"
               continue
             fi
-
             # Stage 1: Generate prompt cards
             echo "→ Stage 1: Generating prompt cards..."
             python generate-pdf.py --post "$POST_FILE" --prompts-only
-
             # Stage 2: Generate PDF
             echo "→ Stage 2: Generating PDF..."
             python generate-pdf.py --post "$POST_FILE"
-
             # Stage 3: Generate embed code
             echo "→ Stage 3: Generating embed code..."
             python generate-pdf.py --post "$POST_FILE" --embed
-
             echo "✓ Done: $POST_FILE"
           done
-
       # 6. Commit generated files back to repo
       - name: Commit generated files
         run: |
           git config user.name  "PRISM Generator"
           git config user.email "prism@eopmedia.com"
-
           # Stage all generated outputs
           git add prism/prompt-cards/ prism/pdfs/
-
           # Check if there's anything to commit
           if git diff --staged --quiet; then
             echo "No generated files to commit."
