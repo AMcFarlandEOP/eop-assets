@@ -1,0 +1,81 @@
+<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
+
+<div id="prism-widget">
+  <div class="pw-header">
+    <span class="pw-eyebrow">PRISM by EOP Media</span>
+    <span class="pw-acronym">Personalized Relevant Intelligence Synthesized for Meaning</span>
+    <span class="pw-title">Engage Your AI to Go Deeper on This Article</span>
+  </div>
+  <div class="pw-intro">
+    This article covers digital ownership, blockchain-based identity, hardware wallet sovereignty, intellectual property infrastructure, and the structural shift away from platform dependency. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context. <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  </div>
+  <div class="pw-actions">
+    <span class="pw-hint">6 prompts built for this article</span>
+    <a class="pw-pdf-btn" href="https://amcfarlandeop.github.io/eop-assets/prism/pdfs/apathy-to-agency.pdf" target="_blank">&#8595; Download PDF Companion</a>
+    <button class="pw-toggle-btn" id="pw-toggle-btn">Explore Prompts &#8595;</button>
+  </div>
+  <div class="pw-cards-panel" id="pw-cards-panel">
+    <span class="pw-cards-label">Choose your starting point — click any card to copy</span>
+    <div class="pw-cards-grid" id="pw-cards-grid"></div>
+    <div class="pw-cards-footer">
+      <span class="pw-footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="pw-footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">Get your personalized profile &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var cards = [{"id": "card-01", "audience": "Creators and content producers building on third-party platforms", "tag": "If you are a creator building an audience on platforms you don't own", "prompt": "I create content and have built an audience on platforms I don't control. This article argues that the value I create — my content, relationships, and attention — flows to the institutions that own the infrastructure, not to me. Help me audit my current digital footprint: where am I most exposed if a platform changes its algorithm or terms? What would a first step toward owning my audience and intellectual property actually look like in practice?"}, {"id": "card-02", "audience": "Founders building products or companies dependent on third-party marketplaces or infrastructure", "tag": "If you are a founder whose business depends on someone else's platform or marketplace", "prompt": "I'm building a company and I rely on third-party infrastructure — a marketplace, a platform, or a distribution channel — that I don't control. This article argues that founders in that position own nothing if the terms change. Help me think through where my business is structurally exposed, and what it would mean to build ownership into my company's architecture from the beginning rather than optimizing within someone else's system."}, {"id": "card-03", "audience": "Individuals exploring digital asset sovereignty and hardware wallet options", "tag": "If you are exploring crypto self-custody and want to understand hardware wallets", "prompt": "I've been holding digital assets on exchanges or in software wallets and I'm starting to take self-custody seriously. This article describes hardware wallets as the most concrete expression of digital sovereignty available today and mentions that USDC can now be spent directly from cold storage at merchants worldwide. Help me understand the practical tradeoffs between hardware and software custody, what I should know before moving assets to a hardware wallet, and what questions I should be asking before I choose a device."}, {"id": "card-04", "audience": "Intellectuals, researchers, and methodology builders who create frameworks rather than products", "tag": "If you build frameworks, methodologies, or bodies of work rather than traditional products", "prompt": "I don't think of myself as building a company — I'm developing a methodology, a framework, or a body of work. This article argues that creators like me deserve the economic standing our work represents, and that blockchain tools now exist to establish provenance, verify authorship, and participate in the value our work generates without institutional intermediaries. Help me think through what it would mean to treat my intellectual output as an asset — how I would establish provenance, what licensing infrastructure might look like, and where to start."}, {"id": "card-05", "audience": "Founders and creators concerned about idea theft and building in public too early", "tag": "If you are developing an idea or asset that you're not ready to release publicly", "prompt": "I have an idea I'm developing — a product, a methodology, or an intelligence asset — and I'm aware that building in public exposes me before I've established provenance or developed defensible answers. This article argues that the conditions under which ideas are developed before they meet the world are part of the ownership question, not separate from it. Help me think through what a protected build environment looks like in practice: how do I develop, document, and protect an idea while it's still in formation, and what signals tell me it's ready to release?"}, {"id": "card-06", "audience": "Readers whose specific situation doesn't fit the other segments", "tag": "If your situation is different from the ones above", "prompt": "I read this article about moving from apathy to agency in the digital economy, and my situation is this: [describe your current role, what you're building or creating, where you feel most dependent on infrastructure you don't control, and what ownership would actually mean for you]. Based on that context, help me identify which parts of this argument apply most directly to my situation and what a realistic first move toward greater digital sovereignty looks like for someone in my position."}];
+
+  var grid   = document.getElementById('pw-cards-grid');
+  var toggle = document.getElementById('pw-toggle-btn');
+  var panel  = document.getElementById('pw-cards-panel');
+
+  cards.forEach(function(card) {
+    var btn = document.createElement('button');
+    btn.className = 'pw-card';
+    btn.innerHTML =
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
+      '<span class="pw-card-prompt">' + card.prompt + '</span>' +
+      '<span class="pw-card-hint">Copy prompt</span>';
+
+    btn.addEventListener('click', function() {
+      var hint = btn.querySelector('.pw-card-hint');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(card.prompt).then(function() {
+          btn.classList.add('copied');
+          hint.textContent = 'Copied to clipboard';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            hint.textContent = 'Copy prompt';
+          }, 2500);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = card.prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        hint.textContent = 'Copied to clipboard';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          hint.textContent = 'Copy prompt';
+        }, 2500);
+      }
+    });
+    grid.appendChild(btn);
+  });
+
+  toggle.addEventListener('click', function() {
+    var isOpen = panel.classList.toggle('open');
+    toggle.innerHTML = isOpen ? 'Collapse &#8593;' : 'Explore Prompts &#8595;';
+  });
+})();
+</script>
