@@ -1,0 +1,45 @@
+{
+  "post": {
+    "slug": "anatomy-big-idea",
+    "generated": "2026-06-22"
+  },
+  "intro": "This article covers the structural conditions that big ideas require to survive — including the risks of premature exposure, the sequence of develop-then-release, and how AI convergence is compressing the window founders have to build privately. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
+  "cards": [
+    {
+      "id": "card-01",
+      "audience": "Early-stage founders with an unbuilt concept",
+      "tag": "If you are a founder sitting on an idea you haven't acted on yet",
+      "prompt": "I have a big idea I haven't fully developed or shared publicly yet. Based on the argument that premature exposure bends an idea toward what can be explained rather than what could be built, help me think through what the idea actually requires before it's ready to meet the market. What questions should I be answering in private before I start talking about this publicly?"
+    },
+    {
+      "id": "card-02",
+      "audience": "Founders who have already pitched or shared an idea and felt it get flattened",
+      "tag": "If you are a founder whose big idea got reduced in the telling",
+      "prompt": "I've shared an idea with investors, a team, or the market and felt it get dismissed or watered down before it had a chance to develop. The article I'm reading argues this is an environmental failure, not a failure of the idea itself. Help me diagnose what happened — specifically where in the sequence of develop, pressure-test, establish value, and release things went wrong, and what a better path forward might look like."
+    },
+    {
+      "id": "card-03",
+      "audience": "Builders navigating the AI and blockchain convergence",
+      "tag": "If you are building at the intersection of AI and Web3",
+      "prompt": "I'm building in the AI and blockchain space and the article I'm reading argues that technological convergence has both narrowed the gap between insight and prototype and shortened the window to build privately before competition catches up. Help me think through how to use AI to accelerate development of my concept while protecting the core insight during the period before it's ready for public exposure."
+    },
+    {
+      "id": "card-04",
+      "audience": "Creators developing intellectual property or methodology",
+      "tag": "If you are a creator trying to build something that becomes a named asset",
+      "prompt": "I'm working on what I believe is a distinct methodology, framework, or creative system — something that could become intellectual property with its own identity. The article I'm reading describes a sequence where value is established before public release, not after. Help me think through how to develop and protect this asset during its formative stage, and what it would mean to treat it as IP from the beginning rather than after the fact."
+    },
+    {
+      "id": "card-05",
+      "audience": "Operators and team leads managing innovation inside existing organizations",
+      "tag": "If you are responsible for how new ideas move through a team or organization",
+      "prompt": "The article I'm reading argues that productivity systems are optimized for execution, not exploration, and that running a big idea through an execution-focused environment reduces it rather than advances it. I lead a team and I'm trying to understand whether our current processes are protecting or flattening the best ideas we have. Help me evaluate our internal environment against the conditions a big idea actually needs to develop."
+    },
+    {
+      "id": "card-06",
+      "audience": "Any reader who wants a personalized starting point",
+      "tag": "If you want to apply this to your specific situation",
+      "prompt": "I just read an article about why big ideas fail — not because of the idea itself, but because of the environment they're developed in. The argument is that most environments collapse the sequence of develop, pressure-test, establish value, and release into premature exposure. Here's my situation: [describe your idea, where you are in developing it, and what environment you're currently building in]. Help me think through what this framework means for my specific context and what I should do differently."
+    }
+  ]
+}
