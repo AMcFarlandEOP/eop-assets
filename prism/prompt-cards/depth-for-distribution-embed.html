@@ -1,0 +1,81 @@
+<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
+
+<div id="prism-widget">
+  <div class="pw-header">
+    <span class="pw-eyebrow">PRISM by EOP Media</span>
+    <span class="pw-acronym">Personalized Relevant Intelligence Synthesized for Meaning</span>
+    <span class="pw-title">Engage Your AI to Go Deeper on This Article</span>
+  </div>
+  <div class="pw-intro">
+    This article covers the structural shift away from optimization-driven content toward perspective-driven bodies of work — and what that means for how depth, provenance, and coherence are now being rewarded by AI systems and readers alike. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context. <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  </div>
+  <div class="pw-actions">
+    <span class="pw-hint">6 prompts built for this article</span>
+    <a class="pw-pdf-btn" href="https://amcfarlandeop.github.io/eop-assets/prism/pdfs/depth-for-distribution.pdf" target="_blank">&#8595; Download PDF Companion</a>
+    <button class="pw-toggle-btn" id="pw-toggle-btn">Explore Prompts &#8595;</button>
+  </div>
+  <div class="pw-cards-panel" id="pw-cards-panel">
+    <span class="pw-cards-label">Choose your starting point — click any card to copy</span>
+    <div class="pw-cards-grid" id="pw-cards-grid"></div>
+    <div class="pw-cards-footer">
+      <span class="pw-footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="pw-footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">Get your personalized profile &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var cards = [{"id": "card-01", "audience": "Founders and creators who've been optimizing content for platforms", "tag": "If you are a founder or creator who's been optimizing content for clicks", "prompt": "I've spent years adapting my content to platform algorithms — shortening arguments, leading with hooks, breaking thinking into bullet points. I'm reading that this approach may have cost me depth and credibility over time. Help me audit the trade-offs I've made: where has optimization served my actual perspective, and where has it quietly diluted it? I want to be honest about what I've lost and what's worth recovering."}, {"id": "card-02", "audience": "Thought leaders building authority in AI-indexed environments", "tag": "If you are building thought leadership in an AI-driven information landscape", "prompt": "I'm trying to understand how AI systems evaluate credibility differently than platform algorithms did. This article argues that AI synthesis rewards coherence and a through-line of developed thinking over time — not optimized individual posts. Help me think through what a 'coherent perspective' actually looks like as a body of work, and what signals tell an AI system that a source is worth returning to."}, {"id": "card-03", "audience": "Writers and strategists sitting on unpublished or underdeveloped ideas", "tag": "If you have a draft folder full of ideas you smoothed over or never finished", "prompt": "I have a draft folder with posts I never published — ideas I softened, arguments I couldn't resolve cleanly, observations without a neat conclusion. This article suggests those drafts aren't failures but evidence of where my real thinking was happening. Help me re-examine one of those unpublished pieces: what was I actually reaching for, why did I abandon it, and is there something in it worth building forward from now?"}, {"id": "card-04", "audience": "Content strategists and consultants advising clients on long-term positioning", "tag": "If you advise founders or creators on content and positioning strategy", "prompt": "I work with clients who have years of published content but no visible through-line connecting their thinking over time. This article introduces four actions — preserve the origin, continue the thinking, make the connection explicit, and activate the perspective — as a framework for turning a content archive into a compounding asset. Help me think through how to apply this framework practically with a client whose work predates their current positioning."}, {"id": "card-05", "audience": "Creators questioning whether their current content strategy is still serving them", "tag": "If you are questioning whether your content strategy is actually building something", "prompt": "I've been consistent with my content — posting regularly, hitting formats that perform — but I don't feel like it's accumulating into anything. This article distinguishes between a 'moment' that gets optimized and a 'perspective' that compounds over time. Help me diagnose whether what I've been building is a perspective or just a series of moments, and what would have to change for it to start compounding."}, {"id": "card-06", "audience": "Any reader with a specific situation not covered above", "tag": "If your situation is different from the ones above", "prompt": "This article is about recovering depth from a content strategy that was built for distribution — and rebuilding a body of work that compounds rather than resets. My situation is this: [describe where you are, what you've built so far, and what feels off or unresolved about it]. Based on what this article argues about perspective, provenance, and coherence, help me think through what the right next move is for someone in my position."}];
+
+  var grid   = document.getElementById('pw-cards-grid');
+  var toggle = document.getElementById('pw-toggle-btn');
+  var panel  = document.getElementById('pw-cards-panel');
+
+  cards.forEach(function(card) {
+    var btn = document.createElement('button');
+    btn.className = 'pw-card';
+    btn.innerHTML =
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
+      '<span class="pw-card-prompt">' + card.prompt + '</span>' +
+      '<span class="pw-card-hint">Copy prompt</span>';
+
+    btn.addEventListener('click', function() {
+      var hint = btn.querySelector('.pw-card-hint');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(card.prompt).then(function() {
+          btn.classList.add('copied');
+          hint.textContent = 'Copied to clipboard';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            hint.textContent = 'Copy prompt';
+          }, 2500);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = card.prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        hint.textContent = 'Copied to clipboard';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          hint.textContent = 'Copy prompt';
+        }, 2500);
+      }
+    });
+    grid.appendChild(btn);
+  });
+
+  toggle.addEventListener('click', function() {
+    var isOpen = panel.classList.toggle('open');
+    toggle.innerHTML = isOpen ? 'Collapse &#8593;' : 'Explore Prompts &#8595;';
+  });
+})();
+</script>
