@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(eop-connect.iife.js)",
+      "Write(eop-connect.iife.js)",
+      "Edit(eop-dashboard.iife.js)",
+      "Write(eop-dashboard.iife.js)",
+      "Edit(.github/workflows/prism-generate.yml)",
+      "Write(.github/workflows/prism-generate.yml)",
+      "Read(.env)"
+    ],
+    "ask": [
+      "Edit(*.php)",
+      "Write(*.php)",
+      "Bash(git push*)",
+      "Bash(git commit*)",
+      "Bash(git add*)"
+    ],
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ],
+    "defaultMode": "default"
+  }
+}
