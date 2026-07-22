@@ -35,6 +35,13 @@ WHITE          = (255, 255, 255)
 
 AGENCY_COLLECTIVE_URL = "https://eopmedia.com/the-agency-collective/"
 
+BASE_URL = "https://amcfarlandeop.github.io/eop-assets"
+
+
+def build_pdf_url(slug):
+    """Construct the public GitHub Pages URL for a post's generated PDF."""
+    return f"{BASE_URL}/prism/pdfs/{slug}.pdf"
+
 # ── STAGE 1: GENERATE PROMPT CARDS VIA ANTHROPIC API ──────────────────────────
 
 def generate_prompt_cards(post_content, post_title):
@@ -123,7 +130,11 @@ def save_prompt_cards(intro, cards, post_slug, output_dir):
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output = {
-        "post": {"slug": post_slug, "generated": datetime.now().strftime("%Y-%m-%d")},
+        "post": {
+            "slug": post_slug,
+            "generated": datetime.now().strftime("%Y-%m-%d"),
+            "pdf_url": build_pdf_url(post_slug),
+        },
         "intro": intro,
         "cards": cards
     }
@@ -223,10 +234,10 @@ def parse_markdown(content):
         if line.strip():
             # Clean markdown formatting
             text = line.strip()
-            text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)  # bold
-            text = re.sub(r'\*(.+?)\*', r'\1', text)       # italic
-            text = re.sub(r'\[(.+?)\]\(.+?\)', r'\1', text) # links
-            text = re.sub(r'`(.+?)`', r'\1', text)          # code
+            text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)  # bold
+            text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)              # italic
+            text = re.sub(r'\[(.+?)\]\((.+?)\)', r'<a href="\2">\1</a>', text)  # links
+            text = re.sub(r'`(.+?)`', r'<code>\1</code>', text)            # code
             if text:
                 blocks.append({'type': 'p', 'text': text})
 
@@ -248,20 +259,13 @@ def extract_post_meta(filepath):
 # ── STAGE 2: GENERATE PDF ─────────────────────────────────────────────────────
 
 def generate_pdf(post_path, cards, output_dir):
-    """Generate branded EOP Media PDF from post content and prompt cards."""
+    """Generate branded EOP Media PDF from post content and prompt cards via WeasyPrint."""
     try:
-        from reportlab.lib.pagesizes import letter
-        from reportlab.lib.styles import ParagraphStyle
-        from reportlab.lib.units import inch
-        from reportlab.lib import colors
-        from reportlab.platypus import (
-            SimpleDocTemplate, Paragraph, Spacer, HRFlowable,
-            KeepTogether, PageBreak
-        )
-        from reportlab.platypus.flowables import HRFlowable
-        from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+        from weasyprint import HTML
     except ImportError:
-        print("ERROR: reportlab not installed. Run: pip install reportlab")
+        print("ERROR: weasyprint not installed. Run: pip install weasyprint")
+        print("WeasyPrint also requires Pango/cairo/GDK-Pixbuf system libraries —")
+        print("see https://doc.courtbouillon.org/weasyprint/stable/first_steps.html")
         sys.exit(1)
 
     # Read and parse post
@@ -277,242 +281,202 @@ def generate_pdf(post_path, cards, output_dir):
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     # ── COLOR HELPERS ──
-    def rgb(r, g, b):
-        return colors.Color(r/255, g/255, b/255)
+    def hexcolor(rgb):
+        return '#%02x%02x%02x' % rgb
 
-    red     = rgb(*EOP_RED)
-    black   = rgb(*EOP_BLACK)
-    ink_mid = rgb(*EOP_INK_MID)
-    parch   = rgb(*EOP_PARCHMENT)
-    rule    = rgb(*EOP_RULE)
-    muted   = rgb(*EOP_MUTED)
-    white   = rgb(*WHITE)
+    red     = hexcolor(EOP_RED)
+    black   = hexcolor(EOP_BLACK)
+    ink_mid = hexcolor(EOP_INK_MID)
+    rule    = hexcolor(EOP_RULE)
+    muted   = hexcolor(EOP_MUTED)
 
-    # ── PAGE TEMPLATE WITH HEADER/FOOTER ──
-    PAGE_W, PAGE_H = letter
-    MARGIN = 0.85 * inch
-    CONTENT_W = PAGE_W - (2 * MARGIN)
-
-    def on_page(canvas, doc):
-        canvas.saveState()
-
-        # Top red rule
-        canvas.setFillColor(red)
-        canvas.rect(0, PAGE_H - 18, PAGE_W, 18, fill=1, stroke=0)
-
-        # Header text
-        canvas.setFillColor(white)
-        canvas.setFont("Helvetica-Bold", 6.5)
-        canvas.drawString(MARGIN, PAGE_H - 12, "PRISM by EOP Media")
-        canvas.setFont("Helvetica", 6)
-        canvas.drawRightString(PAGE_W - MARGIN, PAGE_H - 12,
-                               "Personalized Relevant Intelligence Synthesized for Meaning")
-
-        # Bottom rule
-        canvas.setStrokeColor(rule)
-        canvas.setLineWidth(0.5)
-        canvas.line(MARGIN, 36, PAGE_W - MARGIN, 36)
-
-        # Footer text
-        canvas.setFillColor(muted)
-        canvas.setFont("Helvetica", 6.5)
-        canvas.drawString(MARGIN, 24, f"EOP Media  ·  eopmedia.com  ·  {today}")
-        canvas.drawRightString(PAGE_W - MARGIN, 24, f"Page {doc.page}")
-
-        canvas.restoreState()
-
-    def on_first_page(canvas, doc):
-        on_page(canvas, doc)
-
-    # ── STYLES ──
-    def style(name, **kwargs):
-        defaults = dict(
-            fontName='Helvetica',
-            fontSize=10,
-            leading=16,
-            textColor=ink_mid,
-            spaceAfter=8,
-            spaceBefore=0,
-            allowWidows=1,
-        )
-        defaults.update(kwargs)
-        return ParagraphStyle(name, **defaults)
-
-    styles = {
-        'eyebrow': style('eyebrow',
-            fontName='Helvetica-Bold',
-            fontSize=7,
-            leading=10,
-            textColor=red,
-            spaceAfter=4,
-            spaceBefore=0,
-        ),
-        'acronym': style('acronym',
-            fontName='Helvetica',
-            fontSize=6.5,
-            leading=10,
-            textColor=muted,
-            spaceAfter=10,
-        ),
-        'title': style('title',
-            fontName='Helvetica-Bold',
-            fontSize=22,
-            leading=28,
-            textColor=black,
-            spaceAfter=6,
-            spaceBefore=4,
-        ),
-        'meta': style('meta',
-            fontName='Helvetica',
-            fontSize=7,
-            leading=10,
-            textColor=muted,
-            spaceAfter=16,
-        ),
-        'italic': style('italic',
-            fontName='Helvetica-Oblique',
-            fontSize=10.5,
-            leading=17,
-            textColor=ink_mid,
-            spaceAfter=12,
-        ),
-        'body': style('body',
-            fontName='Helvetica',
-            fontSize=10,
-            leading=17,
-            textColor=ink_mid,
-            spaceAfter=10,
-        ),
-        'h2': style('h2',
-            fontName='Helvetica-Bold',
-            fontSize=14,
-            leading=20,
-            textColor=black,
-            spaceAfter=6,
-            spaceBefore=18,
-        ),
-        'h3': style('h3',
-            fontName='Helvetica-Bold',
-            fontSize=11,
-            leading=16,
-            textColor=black,
-            spaceAfter=4,
-            spaceBefore=12,
-        ),
-        'h4': style('h4',
-            fontName='Helvetica-Bold',
-            fontSize=10,
-            leading=15,
-            textColor=black,
-            spaceAfter=4,
-            spaceBefore=10,
-        ),
-        'card_section_label': style('card_section_label',
-            fontName='Helvetica-Bold',
-            fontSize=7,
-            leading=10,
-            textColor=red,
-            spaceAfter=12,
-            spaceBefore=4,
-        ),
-        'card_tag': style('card_tag',
-            fontName='Helvetica-Bold',
-            fontSize=7,
-            leading=10,
-            textColor=red,
-            spaceAfter=3,
-        ),
-        'card_body': style('card_body',
-            fontName='Helvetica',
-            fontSize=8.5,
-            leading=13,
-            textColor=ink_mid,
-            spaceAfter=0,
-        ),
-        'cta_label': style('cta_label',
-            fontName='Helvetica-Bold',
-            fontSize=7,
-            leading=10,
-            textColor=muted,
-            spaceAfter=4,
-        ),
-        'cta_body': style('cta_body',
-            fontName='Helvetica',
-            fontSize=9,
-            leading=14,
-            textColor=black,
-            spaceAfter=0,
-        ),
-    }
-
-    # ── BUILD STORY ──
-    story = []
-
-    # Title block
-    story.append(Paragraph("PRISM by EOP Media", styles['eyebrow']))
-    story.append(Paragraph("Personalized Relevant Intelligence Synthesized for Meaning", styles['acronym']))
-    story.append(HRFlowable(width=CONTENT_W, thickness=2, color=red, spaceAfter=14))
-    story.append(Paragraph(post_title, styles['title']))
-    story.append(Paragraph(f"EOP Media  ·  {today}", styles['meta']))
-    story.append(HRFlowable(width=CONTENT_W, thickness=0.5, color=rule, spaceAfter=16))
-
-    # Article body
+    # ── ARTICLE BODY HTML ──
+    tag_by_type = {'h2': 'h2', 'h3': 'h3', 'h4': 'h4'}
+    body_parts = []
     for block in blocks:
-        if block['type'] == 'h2':
-            story.append(Paragraph(block['text'], styles['h2']))
-        elif block['type'] == 'h3':
-            story.append(Paragraph(block['text'], styles['h3']))
-        elif block['type'] == 'h4':
-            story.append(Paragraph(block['text'], styles['h4']))
-        elif block['type'] == 'italic':
-            story.append(Paragraph(block['text'], styles['italic']))
-        elif block['type'] == 'p':
-            story.append(Paragraph(block['text'], styles['body']))
+        block_type = block['type']
+        if block_type in tag_by_type:
+            body_parts.append(f"<{tag_by_type[block_type]}>{block['text']}</{tag_by_type[block_type]}>")
+        elif block_type == 'italic':
+            body_parts.append(f'<p class="italic">{block["text"]}</p>')
+        elif block_type == 'p':
+            body_parts.append(f'<p>{block["text"]}</p>')
+    body_html = '\n'.join(body_parts)
 
-    # ── PROMPT CARDS SECTION ──
-    story.append(PageBreak())
-    story.append(Paragraph("PRISM PROMPT CARDS", styles['eyebrow']))
-    story.append(Paragraph(
-        "Choose the prompt that matches your context. Copy it into your AI of choice — "
-        "Claude, ChatGPT, or Perplexity — and add your specific situation to make the intelligence yours.",
-        styles['body']
-    ))
-    story.append(HRFlowable(width=CONTENT_W, thickness=0.5, color=rule, spaceAfter=14))
-
-    # Render each card
+    # ── PROMPT CARDS HTML ──
+    card_parts = []
     for card in cards:
-        card_block = []
-        card_block.append(Paragraph(card['tag'].upper(), styles['card_tag']))
-        card_block.append(Paragraph(card['prompt'], styles['card_body']))
-        card_block.append(Spacer(1, 10))
-        card_block.append(HRFlowable(width=CONTENT_W, thickness=0.5, color=rule, spaceAfter=10))
-        story.append(KeepTogether(card_block))
+        card_parts.append(f'''<div class="card">
+  <div class="card-tag">{card['tag'].upper()}</div>
+  <div class="card-body">{card['prompt']}</div>
+</div>''')
+    cards_html = '\n'.join(card_parts)
 
-    # ── CTA FOOTER ──
-    story.append(Spacer(1, 12))
-    story.append(HRFlowable(width=CONTENT_W, thickness=1.5, color=red, spaceAfter=12))
-    story.append(Paragraph("WANT A PERSONALIZED VERSION?", styles['cta_label']))
-    story.append(Paragraph(
-        f"Members of The Agency Collective access PRISM Standard — prompt cards generated "
-        f"from your specific profile: your business stage, your goals, your fluency level. "
-        f'Learn more at <a href="{AGENCY_COLLECTIVE_URL}" color="#A41623">{AGENCY_COLLECTIVE_URL}</a>',
-        styles['cta_body']
-    ))
+    html_doc = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{post_title}</title>
+<style>
+  @page {{
+    size: letter;
+    margin: 1.05in 0.85in 0.85in 0.85in;
+    @top-center {{
+      content: element(pageHeader);
+      width: 100%;
+      margin: 0;
+    }}
+    @bottom-center {{
+      content: element(pageFooter);
+      width: 100%;
+      margin: 0;
+    }}
+  }}
 
-    # ── BUILD PDF ──
-    doc = SimpleDocTemplate(
-        str(output_path),
-        pagesize=letter,
-        leftMargin=MARGIN,
-        rightMargin=MARGIN,
-        topMargin=MARGIN + 0.25 * inch,
-        bottomMargin=MARGIN,
-        title=post_title,
-        author="EOP Media",
-        subject="PRISM — Personalized Relevant Intelligence Synthesized for Meaning",
-    )
+  * {{ box-sizing: border-box; }}
 
-    doc.build(story, onFirstPage=on_first_page, onLaterPages=on_page)
+  body {{
+    font-family: Georgia, 'Times New Roman', serif;
+    color: {ink_mid};
+    font-size: 10pt;
+    line-height: 1.5;
+  }}
+
+  #page-header {{
+    position: running(pageHeader);
+    background: {red};
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 6.5pt;
+    padding: 6px 0.85in;
+    display: flex;
+    justify-content: space-between;
+  }}
+
+  #page-footer {{
+    position: running(pageFooter);
+    border-top: 0.5pt solid {rule};
+    color: {muted};
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 6.5pt;
+    padding-top: 4px;
+    display: flex;
+    justify-content: space-between;
+  }}
+
+  #page-footer .pageno::after {{ content: counter(page); }}
+
+  .eyebrow {{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 7pt;
+    color: {red};
+    margin-bottom: 4px;
+  }}
+
+  .acronym {{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 6.5pt;
+    color: {muted};
+    margin-bottom: 10px;
+  }}
+
+  hr {{ border: none; border-top: 0.5pt solid {rule}; margin: 14px 0; }}
+  hr.thick {{ border-top: 2pt solid {red}; }}
+
+  h1.title {{
+    font-family: Georgia, serif;
+    font-size: 22pt;
+    color: {black};
+    margin: 4px 0 6px 0;
+  }}
+
+  .meta {{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7pt;
+    color: {muted};
+    margin-bottom: 16px;
+  }}
+
+  h2 {{ font-size: 14pt; color: {black}; margin: 18px 0 6px 0; }}
+  h3 {{ font-size: 11pt; color: {black}; margin: 12px 0 4px 0; }}
+  h4 {{ font-size: 10pt; color: {black}; margin: 10px 0 4px 0; }}
+  p {{ margin: 0 0 10px 0; }}
+  p.italic {{ font-style: italic; }}
+  a {{ color: {red}; }}
+
+  .cards-section {{ page-break-before: always; }}
+
+  .card {{
+    border-bottom: 0.5pt solid {rule};
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    break-inside: avoid;
+  }}
+
+  .card-tag {{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 7pt;
+    color: {red};
+    margin-bottom: 3px;
+  }}
+
+  .card-body {{ font-size: 8.5pt; line-height: 1.4; }}
+
+  .cta {{
+    border-top: 1.5pt solid {red};
+    margin-top: 12px;
+    padding-top: 12px;
+  }}
+
+  .cta-label {{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 7pt;
+    color: {muted};
+    margin-bottom: 4px;
+  }}
+
+  .cta-body {{ font-size: 9pt; color: {black}; }}
+</style>
+</head>
+<body>
+
+<div id="page-header">
+  <span>PRISM by EOP Media</span>
+  <span>Personalized Relevant Intelligence Synthesized for Meaning</span>
+</div>
+<div id="page-footer">
+  <span>EOP Media &middot; eopmedia.com &middot; {today}</span>
+  <span>Page <span class="pageno"></span></span>
+</div>
+
+<div class="eyebrow">PRISM by EOP Media</div>
+<div class="acronym">Personalized Relevant Intelligence Synthesized for Meaning</div>
+<hr class="thick">
+<h1 class="title">{post_title}</h1>
+<div class="meta">EOP Media &middot; {today}</div>
+<hr>
+
+{body_html}
+
+<div class="cards-section">
+  <div class="eyebrow">PRISM PROMPT CARDS</div>
+  <p>Choose the prompt that matches your context. Copy it into your AI of choice — Claude, ChatGPT, or Perplexity — and add your specific situation to make the intelligence yours.</p>
+  <hr>
+  {cards_html}
+</div>
+
+<div class="cta">
+  <div class="cta-label">WANT A PERSONALIZED VERSION?</div>
+  <div class="cta-body">Members of The Agency Collective access PRISM Standard — prompt cards generated from your specific profile: your business stage, your goals, your fluency level. Learn more at <a href="{AGENCY_COLLECTIVE_URL}">{AGENCY_COLLECTIVE_URL}</a></div>
+</div>
+
+</body>
+</html>"""
+
+    HTML(string=html_doc, base_url=str(Path(post_path).resolve())).write_pdf(str(output_path))
 
     return output_path
 
@@ -615,8 +579,7 @@ def generate_embed_code(post_path):
 
     intro = data.get("intro", "")
     cards = data.get("cards", [])
-    base_url = "https://amcfarlandeop.github.io/eop-assets"
-    pdf_url = f"{base_url}/prism/pdfs/{slug}.pdf"
+    pdf_url = data.get("post", {}).get("pdf_url") or build_pdf_url(slug)
 
     cards_json = json.dumps(cards, ensure_ascii=False)
 
