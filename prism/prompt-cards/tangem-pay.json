@@ -1,7 +1,8 @@
 {
   "post": {
     "slug": "tangem-pay",
-    "generated": "2026-05-31"
+    "generated": "2026-05-31",
+    "pdf_url": "https://amcfarlandeop.github.io/eop-assets/prism/pdfs/tangem-pay.pdf"
   },
   "intro": "This article covers stablecoins, Visa's USDC settlement infrastructure, the Tangem Pay virtual card, and the regulatory shifts — like the GENIUS Act — reshaping how real money moves on blockchain rails. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
   "cards": [

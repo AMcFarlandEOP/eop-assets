@@ -1,54 +1,81 @@
-<script>
-  window.PRISM_CONFIG = {
-    intro: "This article covers stablecoins, Visa's USDC settlement infrastructure, the Tangem Pay virtual card, and the regulatory shifts — like the GENIUS Act — reshaping how real money moves on blockchain rails. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context.",
-    pdf_url: "https://amcfarlandeop.github.io/eop-assets/prism/pdfs/tangem-pay.pdf",
-    cards:     [
-        {
-            "id": "card-01",
-            "audience": "Crypto-curious professionals who haven't made a move yet",
-            "tag": "If you are watching the new economy take shape but haven't participated yet",
-            "prompt": "I've been following crypto from the sidelines and this article about Visa settling transactions in USDC at a $7 billion annualized rate caught my attention. Help me understand what stablecoins actually are, how they differ from Bitcoin or Ethereum in practical terms, and what it would mean for someone like me to start using one. I want to understand the basics before I make any decisions."
-        },
-        {
-            "id": "card-02",
-            "audience": "Business owners and merchants evaluating payment infrastructure",
-            "tag": "If you run a business and want to understand what stablecoin settlement means for commerce",
-            "prompt": "I own a business and I'm trying to understand what Visa's USDC settlement program means for merchants and payment infrastructure. This article mentions Cross River Bank and Lead Bank settling with Visa over the Solana blockchain. Help me think through what stablecoin-based settlement could mean for businesses like mine \u2014 including the practical questions around custody, fees, and risk \u2014 so I can evaluate whether this is relevant to how I accept or process payments."
-        },
-        {
-            "id": "card-03",
-            "audience": "Self-custody holders exploring spending tools",
-            "tag": "If you already hold crypto in cold storage and want to use it for everyday spending",
-            "prompt": "I hold cryptocurrency in cold storage and I just read about Tangem Pay \u2014 a virtual Visa card that lets you spend USDC directly from a cold wallet without exposing your private keys. Help me think through the security model here: what does it mean to spend from cold storage, what are the real custody considerations I should understand, and what questions should I be asking before I connect any spending tool to my self-custody setup?"
-        },
-        {
-            "id": "card-04",
-            "audience": "Policy-aware founders and operators tracking regulatory shifts",
-            "tag": "If you are building or operating in Web3 and tracking how regulation shapes infrastructure",
-            "prompt": "This article references the GENIUS Act, passed in July 2025, as the regulatory framework that enabled Visa's U.S. stablecoin settlement rollout. I'm a founder or operator in the Web3 space and I want to understand what the GENIUS Act actually established, how it changed the landscape for stablecoin issuers and institutional participants, and what regulatory developments I should be watching as this framework continues to evolve."
-        },
-        {
-            "id": "card-05",
-            "audience": "Community builders and content creators in the Web3 space",
-            "tag": "If you are building an audience or community around emerging technology",
-            "prompt": "I'm a creator or community builder in the Web3 and emerging tech space. This article uses a tiered community model \u2014 with token-gated access, live sessions, and multiple membership levels \u2014 to add context around a physical product purchase. Help me analyze this model: what makes token-gated communities work, what are the failure modes, and how should I think about designing community infrastructure that creates real ongoing value rather than just one-time access?"
-        },
-        {
-            "id": "card-06",
-            "audience": "Readers with a unique context who want a personalized entry point",
-            "tag": "If your situation doesn't fit neatly into any of the above",
-            "prompt": "I just read an article about stablecoins, Visa's USDC settlement program, Tangem Pay, and tiered community models for navigating the new financial infrastructure. My specific situation is [describe your role, your current relationship with crypto, and what you're trying to figure out]. Based on what I've shared, help me identify the most relevant questions I should be asking right now and where I should focus my attention first."
-        }
-    ]
-  };
-</script>
+<!-- ============================================================
+     PRISM by EOP Media — Gutenberg Custom HTML Block
+     HTML + JS only. All CSS lives in:
+     /wp-content/themes/eop-child-theme/assets/css/custom.css
+     ============================================================ -->
 
-<iframe id="prism-frame"
-  src="https://amcfarlandeop.github.io/eop-assets/prism/widget/prism-widget.html"
-  width="100%" frameborder="0" scrolling="no"
-  style="width:100%;border:none;display:block;"></iframe>
+<div id="prism-widget">
+  <div class="pw-header">
+    <span class="pw-eyebrow">PRISM by EOP Media</span>
+    <span class="pw-acronym">Personalized Relevant Intelligence Synthesized for Meaning</span>
+    <span class="pw-title">Engage Your AI to Go Deeper on This Article</span>
+  </div>
+  <div class="pw-intro">
+    This article covers stablecoins, Visa's USDC settlement infrastructure, the Tangem Pay virtual card, and the regulatory shifts — like the GENIUS Act — reshaping how real money moves on blockchain rails. The prompts below are starting points — not answers. Copy one into your AI of choice and add your own context. <strong>Members of The Agency Collective get a personalized version built around their profile.</strong>
+  </div>
+  <div class="pw-actions">
+    <span class="pw-hint">6 prompts built for this article</span>
+    <a class="pw-pdf-btn" href="https://amcfarlandeop.github.io/eop-assets/prism/pdfs/tangem-pay.pdf" target="_blank">&#8595; Download PDF Companion</a>
+    <button class="pw-toggle-btn" id="pw-toggle-btn">Explore Prompts &#8595;</button>
+  </div>
+  <div class="pw-cards-panel" id="pw-cards-panel">
+    <span class="pw-cards-label">Choose your starting point — click any card to copy</span>
+    <div class="pw-cards-grid" id="pw-cards-grid"></div>
+    <div class="pw-cards-footer">
+      <span class="pw-footer-note">Clicking a prompt copies it to your clipboard.</span>
+      <a class="pw-footer-cta" href="https://eopmedia.com/the-agency-collective/" target="_blank">Get your personalized profile &rarr;</a>
+    </div>
+  </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.3.9/iframeResizer.min.js"></script>
 <script>
-  iFrameResize({ log: false, checkOrigin: false }, '#prism-frame');
+(function() {
+  var cards = [{"id": "card-01", "audience": "Crypto-curious professionals who haven't made a move yet", "tag": "If you are watching the new economy take shape but haven't participated yet", "prompt": "I've been following crypto from the sidelines and this article about Visa settling transactions in USDC at a $7 billion annualized rate caught my attention. Help me understand what stablecoins actually are, how they differ from Bitcoin or Ethereum in practical terms, and what it would mean for someone like me to start using one. I want to understand the basics before I make any decisions."}, {"id": "card-02", "audience": "Business owners and merchants evaluating payment infrastructure", "tag": "If you run a business and want to understand what stablecoin settlement means for commerce", "prompt": "I own a business and I'm trying to understand what Visa's USDC settlement program means for merchants and payment infrastructure. This article mentions Cross River Bank and Lead Bank settling with Visa over the Solana blockchain. Help me think through what stablecoin-based settlement could mean for businesses like mine — including the practical questions around custody, fees, and risk — so I can evaluate whether this is relevant to how I accept or process payments."}, {"id": "card-03", "audience": "Self-custody holders exploring spending tools", "tag": "If you already hold crypto in cold storage and want to use it for everyday spending", "prompt": "I hold cryptocurrency in cold storage and I just read about Tangem Pay — a virtual Visa card that lets you spend USDC directly from a cold wallet without exposing your private keys. Help me think through the security model here: what does it mean to spend from cold storage, what are the real custody considerations I should understand, and what questions should I be asking before I connect any spending tool to my self-custody setup?"}, {"id": "card-04", "audience": "Policy-aware founders and operators tracking regulatory shifts", "tag": "If you are building or operating in Web3 and tracking how regulation shapes infrastructure", "prompt": "This article references the GENIUS Act, passed in July 2025, as the regulatory framework that enabled Visa's U.S. stablecoin settlement rollout. I'm a founder or operator in the Web3 space and I want to understand what the GENIUS Act actually established, how it changed the landscape for stablecoin issuers and institutional participants, and what regulatory developments I should be watching as this framework continues to evolve."}, {"id": "card-05", "audience": "Community builders and content creators in the Web3 space", "tag": "If you are building an audience or community around emerging technology", "prompt": "I'm a creator or community builder in the Web3 and emerging tech space. This article uses a tiered community model — with token-gated access, live sessions, and multiple membership levels — to add context around a physical product purchase. Help me analyze this model: what makes token-gated communities work, what are the failure modes, and how should I think about designing community infrastructure that creates real ongoing value rather than just one-time access?"}, {"id": "card-06", "audience": "Readers with a unique context who want a personalized entry point", "tag": "If your situation doesn't fit neatly into any of the above", "prompt": "I just read an article about stablecoins, Visa's USDC settlement program, Tangem Pay, and tiered community models for navigating the new financial infrastructure. My specific situation is [describe your role, your current relationship with crypto, and what you're trying to figure out]. Based on what I've shared, help me identify the most relevant questions I should be asking right now and where I should focus my attention first."}];
+
+  var grid   = document.getElementById('pw-cards-grid');
+  var toggle = document.getElementById('pw-toggle-btn');
+  var panel  = document.getElementById('pw-cards-panel');
+
+  cards.forEach(function(card) {
+    var btn = document.createElement('button');
+    btn.className = 'pw-card';
+    btn.innerHTML =
+      '<span class="pw-card-tag">'    + card.tag    + '</span>' +
+      '<span class="pw-card-prompt">' + card.prompt + '</span>' +
+      '<span class="pw-card-hint">Copy prompt</span>';
+
+    btn.addEventListener('click', function() {
+      var hint = btn.querySelector('.pw-card-hint');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(card.prompt).then(function() {
+          btn.classList.add('copied');
+          hint.textContent = 'Copied to clipboard';
+          setTimeout(function() {
+            btn.classList.remove('copied');
+            hint.textContent = 'Copy prompt';
+          }, 2500);
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = card.prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.classList.add('copied');
+        hint.textContent = 'Copied to clipboard';
+        setTimeout(function() {
+          btn.classList.remove('copied');
+          hint.textContent = 'Copy prompt';
+        }, 2500);
+      }
+    });
+    grid.appendChild(btn);
+  });
+
+  toggle.addEventListener('click', function() {
+    var isOpen = panel.classList.toggle('open');
+    toggle.innerHTML = isOpen ? 'Collapse &#8593;' : 'Explore Prompts &#8595;';
+  });
+})();
 </script>
