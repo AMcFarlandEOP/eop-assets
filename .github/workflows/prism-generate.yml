@@ -27,9 +27,15 @@ jobs:
         with:
           python-version: '3.11'
       # 3. Install dependencies
+      - name: Install system dependencies for WeasyPrint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libpango-1.0-0 libpangocairo-1.0-0 libcairo2 \
+            libgdk-pixbuf2.0-0 libffi-dev shared-mime-info
       - name: Install dependencies
         run: |
-          pip install anthropic python-dotenv reportlab mistune
+          pip install anthropic python-dotenv weasyprint mistune
       # 4. Find new or modified markdown files in prism/posts/
       - name: Detect changed post files
         id: changed
