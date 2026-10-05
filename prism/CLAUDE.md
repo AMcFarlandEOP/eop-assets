@@ -135,12 +135,13 @@ The widget uses this to filter cards for authenticated members (gated mode).
 ```json
 {
   "id": "card-01",
-  "audience": "Pre-revenue founder",
+  "audience": "Founder just getting started",
   "tag": "If you are just getting started",
   "prompt": "Full prompt text the reader copies into their AI.",
   "profile_match": {
-    "business_stage": ["pre-revenue", "idea-stage"],
-    "goal": ["validate", "token-launch"]
+    "identity": ["founder"],
+    "journey": ["just-starting", "getting-traction"],
+    "challenge": ["challenge-entry"]
   }
 }
 ```
@@ -246,12 +247,15 @@ WordPress reads and writes via a lightweight custom plugin.
 
 ```
 prism_profiles
-  wallet_address    VARCHAR PRIMARY KEY
-  business_stage    VARCHAR
-  goals             VARCHAR
-  web3_fluency      VARCHAR
-  challenges        VARCHAR
-  content_prefs     VARCHAR
+  wallet_address    VARCHAR(42) PRIMARY KEY   (store lowercase)
+  identity          VARCHAR    (Q1, single tag)
+  journey_stage     VARCHAR    (Q2, single tag)
+  goal              VARCHAR    (Q3, single tag)
+  fluency           VARCHAR    (Q4, single tag)
+  challenge         VARCHAR    (Q5, single tag)
+  content_prefs     VARCHAR    (Q6, up to 3 tags)
+  open_question     TEXT       (Q7, optional)
+  current_decision  TEXT       (Q8, optional)
   created_at        DATETIME
   updated_at        DATETIME
 ```
@@ -295,7 +299,7 @@ until both are complete.
 
 These are open questions, not tasks. No V2+ code should be written until both are answered.
 
-1. **Brief data structure** — Do the six prompt cards currently have a discrete question field, or is the prompt text the question? FAQ schema generation requires a clean question string per card. If cards are freeform, a normalization step is required before schema can be automated. Answer this before any work that touches the JSON card structure.
+1. **Brief data structure** — Do the six prompt cards currently have a discrete question field, or is the prompt text the question? FAQ schema generation requires a clean question string per card. If cards are freeform, a normalization step is required before schema can be automated. Answer this before any work that touches the JSON card structure. Finding (Oct 2026): the card JSON has audience, tag and prompt fields only, with no discrete question field. FAQ schema generation requires adding one. This gate stays open until that decision is made.
 
 2. **Schema injection method** — JSON-LD blocks must be injected into the `<head>` of each post page, not into the Gutenberg content area (Jetpack may affect script tags in content blocks). The two options are: (a) a `wp_head` hook in `functions.php`, or (b) injection in `single-perspectives.php`. **Risk:** this is a PHP theme file change — a different kind of task from the Python/JS work done so far, with higher consequence if it goes wrong. Confirm the injection method and ensure a child theme backup exists before any development begins.
 
@@ -360,6 +364,13 @@ Fonts in PDF: HTML/CSS via WeasyPrint — full font control now available
 |The Bridge Has Been Built (Tangem Pay)       |tangem-pay                       |Live  |
 |Information Is Abundant. Meaning Is Personal.|prism-philosophy-heres-the-bridge|Live  |
 |AEO Isn't the New SEO                        |prism-methodology-aeo-vs.-seo    |Live  |
+|The Agency Collective Is Not a Community. It's a Proving Ground.|agency-collective-proving-ground|Live  |
+|Anatomy of a Big Idea|anatomy-big-idea|Live  |
+|From Apathy to Agency: Creating the Future of Digital Ownership|apathy-to-agency|Live  |
+|You Traded Depth for Distribution. The New System Wants It Back.|depth-for-distribution|Live  |
+|Evolve Marketing for the Next Economy|evolve-marketing-next-economy|Live  |
+|Revolutionize the Start-up Ecosystem|revolutionize-startup-ecosystem|Live  |
+|Transform the Marketing Profession|transform-marketing-profession|Live  |
 
 -----
 
@@ -367,8 +378,8 @@ Fonts in PDF: HTML/CSS via WeasyPrint — full font control now available
 
 These are additions to V1 — not V2 build items. Complete before V2 begins.
 
-- [ ] Replace ReportLab with WeasyPrint in generate-pdf.py
-- [ ] Add pdf_url field to JSON output in generate-pdf.py
+- [x] Replace ReportLab with WeasyPrint in generate-pdf.py
+- [x] Add pdf_url field to JSON output in generate-pdf.py
 - [ ] Add platform selector to widget (Claude primary, ChatGPT secondary)
 - [ ] Add "Go Deeper →" button to each prompt card
 - [ ] Build deep-link URL constructor in widget JavaScript (Claude: pdf_url, ChatGPT: condensed summary)
@@ -376,7 +387,7 @@ These are additions to V1 — not V2 build items. Complete before V2 begins.
 - [ ] Add localStorage platform preference memory
 - [ ] Build prism.eopmedia.com landing page (return destination + Agency Collective conversion)
 - [ ] Address GitHub Pages propagation delay (known V1 limitation)
-- [ ] Resolve PDF clickable links (resolved by WeasyPrint migration)
+- [x] Resolve PDF clickable links (resolved by WeasyPrint migration)
 
 -----
 
